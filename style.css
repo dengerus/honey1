@@ -1,0 +1,259 @@
+:root {
+    --bg-color: #fffefb;
+    --text-brown: #451a03;
+    --accent-blue: #2563eb;
+    --header-bg: #fef08a;
+    --card-radius: 15px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-brown);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+/* Реалистичные шестиугольные соты по бокам до самого низа */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    z-index: -1;
+    background-color: #fef9c3;
+    background-image: radial-gradient(circle farthest-side at 10% 90%, #fffbeb, transparent),
+                      radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
+                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
+                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
+    background-size: 30px 52px;
+    background-position: 0 0, 0 0, 0 0, 0 0, 15px 26px, 15px 26px, 0 0, 15px 26px;
+    opacity: 0.7;
+}
+body::before { left: 0; }
+body::after { right: 0; }
+
+.main-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Шапка с названием и баночкой */
+header {
+    background-color: var(--header-bg);
+    border: 2px solid #ca8a04;
+    border-radius: var(--card-radius);
+    padding: 20px 40px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #713f12;
+    text-decoration: none;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.header-img {
+    height: 60px;
+    width: auto;
+}
+
+/* Три белых прямоугольника-переключателя */
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    width: 100%;
+}
+
+nav li {
+    flex: 1;
+}
+
+nav a {
+    display: block;
+    background: #ffffff;
+    color: var(--text-brown);
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 8px;
+    border: 1px solid #e7e5e4;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+nav a:hover {
+    background-color: #fffbeb;
+    border-color: #facc15;
+}
+
+/* Активная страница с синей полоской снизу */
+nav a.active {
+    position: relative;
+    color: var(--accent-blue);
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+    height: 4px;
+    background-color: var(--accent-blue);
+    border-radius: 4px 4px 0 0;
+}
+
+/* Карточки контента (сетка из 3 штук) */
+.honey-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: var(--card-radius);
+    border: 1px solid #fef08a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.info-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #713f12;
+}
+
+.info-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #57534e;
+    margin-bottom: 15px;
+}
+
+.info-card .meta {
+    margin-top: auto;
+    font-weight: 700;
+    color: #ca8a04;
+    font-size: 17px;
+    border-top: 1px solid #fef08a;
+    padding-top: 10px;
+}
+
+/* Страница контактов и отзывов */
+.contact-page-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.address-block, .reviews-block {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: var(--card-radius);
+    border: 1px solid #fef08a;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.contact-label {
+    font-size: 14px;
+    color: #a8a29e;
+    margin-bottom: 5px;
+    display: block;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.contact-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-brown);
+    margin-bottom: 25px;
+    display: block;
+    line-height: 1.5;
+}
+
+.review-card {
+    background: #fffbeb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #ca8a04;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #713f12;
+}
+
+.review-stars {
+    color: #ca8a04;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #a8a29e;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+/* Адаптивность для телефонов */
+@media (max-width: 768px) {
+    body::before, body::after { width: 15px; }
+    .main-wrapper { margin: 0 10px; padding: 10px; }
+    header { padding: 15px; }
+    .header-top { flex-direction: column; gap: 10px; text-align: center; }
+    nav ul { flex-direction: column; gap: 5px; }
+    .honey-grid { grid-template-columns: 1fr; }
+    .contact-page-layout { grid-template-columns: 1fr; }
+}
