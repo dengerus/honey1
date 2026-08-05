@@ -56,7 +56,7 @@ body::after { right: 0; }
     flex-direction: column;
 }
 
-/* Шапка с названием (без кривой картинки) */
+/* Шапка сайта */
 header {
     background-color: var(--header-bg);
     border: 2px solid #ca8a04;
@@ -71,8 +71,16 @@ header {
 
 .header-top {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* Строгий профессиональный размер иконки в шапке */
+.header-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
 .site-title {
@@ -83,7 +91,7 @@ header {
     text-shadow: 1px 1px 0 #fff;
 }
 
-/* Кнопки навигации ВСЕГДА в ряд (горизонтально) */
+/* Навигация всегда в ряд */
 nav ul {
     display: flex;
     list-style: none;
@@ -114,7 +122,6 @@ nav a:hover {
     border-color: #facc15;
 }
 
-/* Активная страница с синей полоской снизу */
 nav a.active {
     position: relative;
     color: var(--accent-blue);
@@ -131,7 +138,7 @@ nav a.active::after {
     border-radius: 4px 4px 0 0;
 }
 
-/* Сетка карточек контента */
+/* Сетка карточек */
 .honey-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -149,12 +156,14 @@ nav a.active::after {
     flex-direction: column;
 }
 
+/* Профессиональное поведение картинок в карточках */
 .info-card img {
     width: 100%;
     height: 230px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 15px;
+    background-color: #fef08a; /* Цвет-заглушка, если картинка грузится */
 }
 
 .info-card h3 {
@@ -179,7 +188,6 @@ nav a.active::after {
     padding-top: 10px;
 }
 
-/* Блок для пустой страницы контактов */
 .empty-page-box {
     background: #ffffff;
     padding: 40px;
@@ -199,11 +207,11 @@ footer {
     margin-top: auto;
 }
 
-/* Адаптивность для телефонов (карточки в 1 колонку, но меню остается в ряд) */
 @media (max-width: 768px) {
     body::before, body::after { width: 15px; }
     .main-wrapper { margin: 0 10px; padding: 10px; }
     header { padding: 15px; }
     .honey-grid { grid-template-columns: 1fr; }
-    nav a { font-size: 12px; padding: 10px 5px; } /* уменьшаем текст в кнопках для узких экранов */
+    .site-title { font-size: 24px; }
+    nav a { font-size: 12px; padding: 10px 5px; }
 }
