@@ -3,7 +3,8 @@
     --text-brown: #451a03;
     --accent-blue: #2563eb;
     --header-bg: #fef08a;
-    --card-radius: 15px;
+    --card-radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -21,9 +22,10 @@ body {
     min-height: 100vh;
     position: relative;
     padding-bottom: 50px;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Соты по бокам */
+/* Шестиугольные соты по бокам */
 body::before, body::after {
     content: '';
     position: fixed;
@@ -33,13 +35,13 @@ body::before, body::after {
     z-index: -1;
     background-color: #fef9c3;
     background-image: radial-gradient(circle farthest-side at 10% 90%, #fffbeb, transparent),
-                      radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
-                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
-                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
+                        radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
+                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
+                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
     background-size: 30px 52px;
     background-position: 0 0, 0 0, 0 0, 0 0, 15px 26px, 15px 26px, 0 0, 15px 26px;
     opacity: 0.7;
@@ -56,7 +58,6 @@ body::after { right: 0; }
     flex-direction: column;
 }
 
-/* Шапка сайта */
 header {
     background-color: var(--header-bg);
     border: 2px solid #ca8a04;
@@ -66,34 +67,31 @@ header {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px -5px rgba(202, 138, 4, 0.2);
 }
 
 .header-top {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
 }
 
-/* СТРОГО фиксированный размер иконки, чтобы она не ломала верстку */
-.header-icon {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px;
-    min-height: 32px;
-    object-fit: contain;
+.header-emoji {
+    font-size: 32px;
+    line-height: 1;
 }
 
 .site-title {
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 800;
     color: #713f12;
     text-decoration: none;
-    text-shadow: 1px 1px 0 #fff;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+    letter-spacing: -0.5px;
 }
 
-/* Навигация (всегда в ряд) */
+/* Навигация ВСЕГДА в горизонтальный ряд */
 nav ul {
     display: flex;
     list-style: none;
@@ -113,34 +111,46 @@ nav a {
     padding: 12px 10px;
     text-decoration: none;
     font-weight: 700;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #e7e5e4;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     font-size: 14px;
+    white-space: nowrap;
 }
 
 nav a:hover {
     background-color: #fffbeb;
     border-color: #facc15;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 nav a.active {
     position: relative;
     color: var(--accent-blue);
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
 }
 
 nav a.active::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 10px;
-    right: 10px;
+    left: 12px;
+    right: 12px;
     height: 4px;
     background-color: var(--accent-blue);
     border-radius: 4px 4px 0 0;
 }
 
-/* Сетка карточек */
+.page-heading {
+    margin-bottom: 30px;
+    color: #713f12;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
 .honey-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -153,23 +163,36 @@ nav a.active::after {
     padding: 25px;
     border-radius: var(--card-radius);
     border: 1px solid #fef08a;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     display: flex;
     flex-direction: column;
+    transition: var(--transition);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(202, 138, 4, 0.15);
+    border-color: #facc15;
 }
 
 .info-card img {
     width: 100%;
     height: 230px;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
     background-color: #fef08a;
+    cursor: zoom-in;
+    transition: var(--transition);
+}
+
+.info-card img:hover {
+    opacity: 0.95;
 }
 
 .info-card h3 {
     font-size: 22px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #713f12;
 }
 
@@ -177,7 +200,7 @@ nav a.active::after {
     font-size: 15px;
     line-height: 1.6;
     color: #57534e;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .info-card .meta {
@@ -185,35 +208,89 @@ nav a.active::after {
     font-weight: 700;
     color: #ca8a04;
     font-size: 17px;
-    border-top: 1px solid #fef08a;
-    padding-top: 10px;
+    border-top: 1px solid #fef9c3;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .empty-page-box {
     background: #ffffff;
-    padding: 40px;
+    padding: 50px;
     border-radius: var(--card-radius);
     border: 1px solid #fef08a;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     text-align: center;
     color: #78716c;
     font-size: 18px;
 }
 
+/* Lightbox стили */
+.lightbox-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.lightbox-modal.active {
+    display: flex;
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    border: 2px solid #fef08a;
+    object-fit: contain;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.lightbox-close:hover {
+    color: #facc15;
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 footer {
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     color: #a8a29e;
     font-size: 14px;
     margin-top: auto;
 }
 
 @media (max-width: 768px) {
-    body::before, body::after { width: 15px; }
-    .main-wrapper { margin: 0 10px; padding: 10px; }
-    header { padding: 15px; }
-    .honey-grid { grid-template-columns: 1fr; }
-    .site-title { font-size: 20px; }
-    .header-icon { width: 26px !important; height: 26px !important; }
-    nav a { font-size: 11px; padding: 10px 4px; }
+    body::before, body::after { width: 10px; }
+    .main-wrapper { margin: 0; padding: 10px; }
+    header { padding: 15px; margin-bottom: 20px; }
+    .honey-grid { grid-template-columns: 1fr; gap: 20px; }
+    .site-title { font-size: 22px; }
+    nav a { font-size: 12px; padding: 10px 6px; }
+    .info-card img { height: 200px; }
 }
