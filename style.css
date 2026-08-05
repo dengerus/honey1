@@ -56,7 +56,7 @@ body::after { right: 0; }
     flex-direction: column;
 }
 
-/* Шапка с названием и баночкой */
+/* Шапка с названием (без кривой картинки) */
 header {
     background-color: var(--header-bg);
     border: 2px solid #ca8a04;
@@ -71,7 +71,7 @@ header {
 
 .header-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
@@ -83,16 +83,11 @@ header {
     text-shadow: 1px 1px 0 #fff;
 }
 
-.header-img {
-    height: 60px;
-    width: auto;
-}
-
-/* Три белых прямоугольника-переключателя */
+/* Кнопки навигации ВСЕГДА в ряд (горизонтально) */
 nav ul {
     display: flex;
     list-style: none;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
 }
 
@@ -105,13 +100,13 @@ nav a {
     background: #ffffff;
     color: var(--text-brown);
     text-align: center;
-    padding: 15px;
+    padding: 12px 10px;
     text-decoration: none;
     font-weight: 700;
     border-radius: 8px;
     border: 1px solid #e7e5e4;
     transition: all 0.3s ease;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 nav a:hover {
@@ -129,14 +124,14 @@ nav a.active::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 15px;
-    right: 15px;
+    left: 10px;
+    right: 10px;
     height: 4px;
     background-color: var(--accent-blue);
     border-radius: 4px 4px 0 0;
 }
 
-/* Карточки контента (сетка из 3 штук) */
+/* Сетка карточек контента */
 .honey-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -184,59 +179,16 @@ nav a.active::after {
     padding-top: 10px;
 }
 
-/* Страница контактов и отзывов */
-.contact-page-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 40px;
-    align-items: start;
-}
-
-.address-block, .reviews-block {
+/* Блок для пустой страницы контактов */
+.empty-page-box {
     background: #ffffff;
-    padding: 30px;
+    padding: 40px;
     border-radius: var(--card-radius);
     border: 1px solid #fef08a;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.contact-label {
-    font-size: 14px;
-    color: #a8a29e;
-    margin-bottom: 5px;
-    display: block;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.contact-value {
+    text-align: center;
+    color: #78716c;
     font-size: 18px;
-    font-weight: 700;
-    color: var(--text-brown);
-    margin-bottom: 25px;
-    display: block;
-    line-height: 1.5;
-}
-
-.review-card {
-    background: #fffbeb;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    border-left: 4px solid #ca8a04;
-}
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-weight: 700;
-    color: #713f12;
-}
-
-.review-stars {
-    color: #ca8a04;
 }
 
 footer {
@@ -247,13 +199,11 @@ footer {
     margin-top: auto;
 }
 
-/* Адаптивность для телефонов */
+/* Адаптивность для телефонов (карточки в 1 колонку, но меню остается в ряд) */
 @media (max-width: 768px) {
     body::before, body::after { width: 15px; }
     .main-wrapper { margin: 0 10px; padding: 10px; }
     header { padding: 15px; }
-    .header-top { flex-direction: column; gap: 10px; text-align: center; }
-    nav ul { flex-direction: column; gap: 5px; }
     .honey-grid { grid-template-columns: 1fr; }
-    .contact-page-layout { grid-template-columns: 1fr; }
+    nav a { font-size: 12px; padding: 10px 5px; } /* уменьшаем текст в кнопках для узких экранов */
 }
