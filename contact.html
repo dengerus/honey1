@@ -40,5 +40,24 @@
             <p>&copy; 2026 Экспериментальный сайт о мёде. Все права защищены.</p>
         </footer>
     </div>
+
+    <!-- Плавающая нижняя панель заказа -->
+    <div id="order-bar" class="order-bar hidden">
+        <div class="order-bar-content">
+            <div class="order-info">
+                <div class="order-title-row">
+                    <span class="order-heading">заказ</span>
+                    <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
+                </div>
+                <div id="bar-items-text" class="order-items-preview">пусто</div>
+            </div>
+            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
+                <span class="wa-text">отправить в Ватсап</span>
+                <span class="wa-icon">➔</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
 </body>
 </html>

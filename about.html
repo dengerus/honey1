@@ -51,40 +51,29 @@
         </footer>
     </div>
 
-    <!-- Компонент Lightbox -->
+    <!-- Плавающая нижняя панель заказа -->
+    <div id="order-bar" class="order-bar hidden">
+        <div class="order-bar-content">
+            <div class="order-info">
+                <div class="order-title-row">
+                    <span class="order-heading">заказ</span>
+                    <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
+                </div>
+                <div id="bar-items-text" class="order-items-preview">пусто</div>
+            </div>
+            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
+                <span class="wa-text">отправить в Ватсап</span>
+                <span class="wa-icon">➔</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Lightbox для картинок -->
     <div id="lightbox" class="lightbox-modal">
         <span class="lightbox-close">&times;</span>
         <img class="lightbox-content" id="lightbox-img" alt="Увеличенное фото">
     </div>
 
-    <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.querySelector('.lightbox-close');
-        const images = document.querySelectorAll('.info-card img');
-
-        images.forEach(img => {
-            img.addEventListener('click', () => {
-                lightbox.classList.add('active');
-                lightboxImg.src = img.src;
-            });
-        });
-
-        closeBtn.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-        });
-
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                lightbox.classList.remove('active');
-            }
-        });
-    </script>
+    <script src="cart.js"></script>
 </body>
 </html>

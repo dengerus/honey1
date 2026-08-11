@@ -21,7 +21,7 @@ body {
     justify-content: center;
     min-height: 100vh;
     position: relative;
-    padding-bottom: 50px;
+    padding-bottom: 90px; /* Отступ снизу под плавающую панель */
     -webkit-font-smoothing: antialiased;
 }
 
@@ -186,10 +186,6 @@ nav a.active::after {
     transition: var(--transition);
 }
 
-.info-card img:hover {
-    opacity: 0.95;
-}
-
 .info-card h3 {
     font-size: 22px;
     margin-bottom: 12px;
@@ -207,12 +203,159 @@ nav a.active::after {
     margin-top: auto;
     font-weight: 700;
     color: #ca8a04;
-    font-size: 17px;
+    font-size: 16px;
     border-top: 1px solid #fef9c3;
     padding-top: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* Стили плюсов и минусов в карточках */
+.counter-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fffbeb;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid #fde047;
+}
+
+.cnt-btn {
+    background: #ca8a04;
+    color: white;
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.cnt-btn:hover {
+    background: #a16207;
+    transform: scale(1.1);
+}
+
+.cnt-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: #713f12;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* --- ПЛАВАЮЩИЙ НИЖНИЙ БЛОК ЗАКАЗА (по вашему эскизу) --- */
+.order-bar {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 700px;
+    background: #ffffff;
+    border: 2px solid #ca8a04;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 999;
+    padding: 12px 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.order-bar.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(30px);
+}
+
+.order-bar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.order-title-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.order-heading {
+    font-size: 18px;
+    font-weight: 800;
+    color: #713f12;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #ca8a04;
+    padding-bottom: 1px;
+}
+
+.order-total {
+    font-size: 15px;
+    color: #57534e;
+}
+
+.order-total strong {
+    color: #ca8a04;
+    font-size: 17px;
+}
+
+.order-items-preview {
+    font-size: 13px;
+    color: #78716c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 380px;
+}
+
+/* Круглая кнопка отправки в WhatsApp */
+.whatsapp-btn {
+    background-color: #25d366;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.whatsapp-btn:hover {
+    background-color: #20ba5a;
+    transform: scale(1.05);
+}
+
+.wa-icon {
+    background: white;
+    color: #25d366;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 15px;
 }
 
 .empty-page-box {
@@ -240,7 +383,6 @@ nav a.active::after {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    animation: fadeIn 0.3s ease;
 }
 
 .lightbox-modal.active {
@@ -251,7 +393,6 @@ nav a.active::after {
     max-width: 90%;
     max-height: 90vh;
     border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     border: 2px solid #fef08a;
     object-fit: contain;
 }
@@ -262,19 +403,7 @@ nav a.active::after {
     right: 35px;
     color: #ffffff;
     font-size: 40px;
-    font-weight: 300;
     cursor: pointer;
-    transition: var(--transition);
-}
-
-.lightbox-close:hover {
-    color: #facc15;
-    transform: scale(1.1);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 footer {
@@ -286,6 +415,7 @@ footer {
 }
 
 @media (max-width: 768px) {
+    body { padding-bottom: 110px; }
     body::before, body::after { width: 10px; }
     .main-wrapper { margin: 0; padding: 10px; }
     header { padding: 15px; margin-bottom: 20px; }
@@ -293,4 +423,21 @@ footer {
     .site-title { font-size: 22px; }
     nav a { font-size: 12px; padding: 10px 6px; }
     .info-card img { height: 200px; }
+    
+    .order-bar {
+        width: 96%;
+        padding: 10px 12px;
+    }
+    .order-bar-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .whatsapp-btn {
+        justify-content: center;
+        width: 100%;
+    }
+    .order-items-preview {
+        max-width: 100%;
+    }
 }

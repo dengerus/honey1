@@ -25,28 +25,43 @@
         <main>
             <h1 class="page-heading">Наш натуральный мёд</h1>
             <div class="honey-grid">
-                <article class="info-card">
+                <article class="info-card" data-id="1" data-name="Липовый мёд" data-price="1200">
                     <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Липовый мед">
                     <h3>Липовый мёд</h3>
                     <p>Ароматный, светлый мёд высшего качества. Обладает целебными свойствами и мягким вкусом.</p>
                     <div class="meta">
-                        <span>Цена: 1200 ₽ / 1л</span>
+                        <span>1200 ₽ / 1л</span>
+                        <div class="counter-box">
+                            <button class="cnt-btn minus">-</button>
+                            <span class="cnt-value">0</span>
+                            <button class="cnt-btn plus">+</button>
+                        </div>
                     </div>
                 </article>
-                <article class="info-card">
+                <article class="info-card" data-id="2" data-name="Гречишный мёд" data-price="1400">
                     <img src="https://images.unsplash.com/photo-1471943311424-646960669fbc?w=600&auto=format&fit=crop&q=80" alt="Гречишный мед">
                     <h3>Гречишный мёд</h3>
                     <p>Насыщенный темный мёд с ярким терпким вкусом. Содержит много полезных микроэлементов.</p>
                     <div class="meta">
-                        <span>Цена: 1400 ₽ / 1л</span>
+                        <span>1400 ₽ / 1л</span>
+                        <div class="counter-box">
+                            <button class="cnt-btn minus">-</button>
+                            <span class="cnt-value">0</span>
+                            <button class="cnt-btn plus">+</button>
+                        </div>
                     </div>
                 </article>
-                <article class="info-card">
+                <article class="info-card" data-id="3" data-name="Луговое разнотравье" data-price="1000">
                     <img src="https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=600&auto=format&fit=crop&q=80" alt="Цветочный мед">
                     <h3>Луговое разнотравье</h3>
                     <p>Сбор с диких луговых трав. Настоящий вкус лета, солнца и цветущих полей.</p>
                     <div class="meta">
-                        <span>Цена: 1000 ₽ / 1л</span>
+                        <span>1000 ₽ / 1л</span>
+                        <div class="counter-box">
+                            <button class="cnt-btn minus">-</button>
+                            <span class="cnt-value">0</span>
+                            <button class="cnt-btn plus">+</button>
+                        </div>
                     </div>
                 </article>
             </div>
@@ -57,40 +72,29 @@
         </footer>
     </div>
 
-    <!-- Компонент Lightbox -->
+    <!-- Плавающая нижняя панель заказа (по вашему эскизу) -->
+    <div id="order-bar" class="order-bar hidden">
+        <div class="order-bar-content">
+            <div class="order-info">
+                <div class="order-title-row">
+                    <span class="order-heading">заказ</span>
+                    <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
+                </div>
+                <div id="bar-items-text" class="order-items-preview">пусто</div>
+            </div>
+            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
+                <span class="wa-text">отправить в Ватсап</span>
+                <span class="wa-icon">➔</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Lightbox для картинок -->
     <div id="lightbox" class="lightbox-modal">
         <span class="lightbox-close">&times;</span>
         <img class="lightbox-content" id="lightbox-img" alt="Увеличенное фото">
     </div>
 
-    <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.querySelector('.lightbox-close');
-        const images = document.querySelectorAll('.info-card img');
-
-        images.forEach(img => {
-            img.addEventListener('click', () => {
-                lightbox.classList.add('active');
-                lightboxImg.src = img.src;
-            });
-        });
-
-        closeBtn.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-        });
-
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                lightbox.classList.remove('active');
-            }
-        });
-    </script>
+    <script src="cart.js"></script>
 </body>
 </html>
