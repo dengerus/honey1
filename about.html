@@ -51,12 +51,19 @@
         </footer>
     </div>
 
-    <!-- Плавающая нижняя панель заказа -->
+    <div id="cart-popup" class="cart-popup hidden">
+        <div class="cart-popup-header">
+            <h3>Состав вашего заказа</h3>
+            <button id="close-cart-popup" class="close-popup-btn">&times;</button>
+        </div>
+        <div id="cart-popup-items" class="cart-popup-items"></div>
+    </div>
+
     <div id="order-bar" class="order-bar hidden">
         <div class="order-bar-content">
-            <div class="order-info">
+            <div id="order-bar-toggle" class="order-info">
                 <div class="order-title-row">
-                    <span class="order-heading">заказ</span>
+                    <span class="order-heading">заказ <small class="popup-hint">(нажмите, чтобы изменить)</small></span>
                     <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
                 </div>
                 <div id="bar-items-text" class="order-items-preview">пусто</div>
@@ -68,7 +75,6 @@
         </div>
     </div>
 
-    <!-- Lightbox для картинок -->
     <div id="lightbox" class="lightbox-modal">
         <span class="lightbox-close">&times;</span>
         <img class="lightbox-content" id="lightbox-img" alt="Увеличенное фото">

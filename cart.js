@@ -1,27 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const WHATSAPP_NUMBER = '77074242531'; // Ваш номер телефона
-    
-    // Ключ для хранения в памяти браузера, чтобы данные жили при переходе по страницам
+    const WHATSAPP_NUMBER = '77074242531';
     const STORAGE_KEY = 'honey_shop_cart_v1';
 
-    // Загружаем корзину из localStorage или создаем пустую
     let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-    // Находим карточки товаров на странице
     const cards = document.querySelectorAll('.info-card');
     const orderBar = document.getElementById('order-bar');
     const barTotalPrice = document.getElementById('bar-total-price');
     const barItemsText = document.getElementById('bar-items-text');
     const whatsappBtn = document.getElementById('whatsapp-send-btn');
+    
+    const cartPopup = document.getElementById('cart-popup');
+    const orderBarToggle = document.getElementById('order-bar-toggle');
+    const closePopupBtn = document.getElementById('close-cart-popup');
+    const cartPopupItems = document.getElementById('cart-popup-items');
 
-    // Функция отрисовки состояния (плюсы/минусы на карточках и нижняя панель)
     function updateUI() {
         let totalSum = 0;
         let totalCount = 0;
         let itemsSummaryArray = [];
+        let popupHtml = '';
 
         cards.forEach(card => {
             const id = card.dataset.id;
+            const name = card.dataset.name;
+            const price = parseInt(card.dataset.price);
             const countSpan = card.querySelector('.cnt-value');
             const qty = cart[id] || 0;
             
@@ -30,15 +33,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (qty > 0) {
-                const name = card.dataset.name;
-                const price = parseInt(card.dataset.price);
                 totalSum += price * qty;
                 totalCount += qty;
                 itemsSummaryArray.push(`${name} x${qty}`);
+
+                popupHtml += `
+                    <div class="popup-item-row">
+                        <div class="popup-item-info">
+                            <span class="popup-item-name">${name}</span>
+                            <span class="popup-item-price">${price} ₽ × ${qty} = <strong>${price * qty} ₽</strong></span>
+                        </div>
+                        <div class="popup-item-controls">
+                            <div class="counter-box">
+                                <button class="cnt-btn popup-minus" data-id="${id}">-</button>
+                                <span class="cnt-value">${qty}</span>
+                                <button class="cnt-btn popup-plus" data-id="${id}">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
         });
 
-        // Обновляем общую сумму и текст в нижней панели
+        if (cartPopupItems) {
+            cartPopupItems.innerHTML = popupHtml || '<p style="text-align:center; color:#78716c; padding:10px;">Корзина пуста</p>';
+            attachPopupListeners();
+        }
+
         barTotalPrice.textContent = totalSum + ' ₽';
 
         if (totalCount > 0) {
@@ -46,13 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
             orderBar.classList.remove('hidden');
         } else {
             orderBar.classList.add('hidden');
+            if (cartPopup) cartPopup.classList.remove('active');
         }
 
-        // Сохраняем в память браузера
         localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
     }
 
-    // Навешиваем клики на кнопки плюс и минус в карточках
     cards.forEach(card => {
         const id = card.dataset.id;
         const plusBtn = card.querySelector('.plus');
@@ -69,16 +89,49 @@ document.addEventListener('DOMContentLoaded', () => {
             minusBtn.addEventListener('click', () => {
                 if (cart[id] > 0) {
                     cart[id]--;
-                    if (cart[id] === 0) {
-                        delete cart[id];
-                    }
+                    if (cart[id] === 0) delete cart[id];
                     updateUI();
                 }
             });
         }
     });
 
-    // Обработка клика по кнопке отправки заказа в WhatsApp
+    function attachPopupListeners() {
+        const popupPlusBtns = cartPopupItems.querySelectorAll('.popup-plus');
+        const popupMinusBtns = cartPopupItems.querySelectorAll('.popup-minus');
+
+        popupPlusBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                cart[id] = (cart[id] || 0) + 1;
+                updateUI();
+            });
+        });
+
+        popupMinusBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                if (cart[id] > 0) {
+                    cart[id]--;
+                    if (cart[id] === 0) delete cart[id];
+                    updateUI();
+                }
+            });
+        });
+    }
+
+    if (orderBarToggle && cartPopup) {
+        orderBarToggle.addEventListener('click', () => {
+            cartPopup.classList.toggle('active');
+        });
+    }
+
+    if (closePopupBtn && cartPopup) {
+        closePopupBtn.addEventListener('click', () => {
+            cartPopup.classList.remove('active');
+        });
+    }
+
     if (whatsappBtn) {
         whatsappBtn.addEventListener('click', () => {
             let message = "Здравствуйте! Хочу сделать заказ:\n\n";
@@ -98,19 +151,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             message += `\n📦 Итого к оплате: ${totalSum} ₽`;
 
-            // Кодируем текст для ссылки WhatsApp
             const encodedMessage = encodeURIComponent(message);
             const waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-
-            // Открываем WhatsApp в новом окне/приложении
             window.open(waURL, '_blank');
         });
     }
 
-    // Инициализация интерфейса при загрузке страницы
     updateUI();
 
-    // Логика Lightbox (увеличение картинок)
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const closeBtn = document.querySelector('.lightbox-close');
@@ -132,12 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
                 lightbox.classList.remove('active');
             }
         });

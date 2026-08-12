@@ -21,11 +21,10 @@ body {
     justify-content: center;
     min-height: 100vh;
     position: relative;
-    padding-bottom: 90px; /* Отступ снизу под плавающую панель */
+    padding-bottom: 90px;
     -webkit-font-smoothing: antialiased;
 }
 
-/* Шестиугольные соты по бокам */
 body::before, body::after {
     content: '';
     position: fixed;
@@ -91,7 +90,6 @@ header {
     letter-spacing: -0.5px;
 }
 
-/* Навигация ВСЕГДА в горизонтальный ряд */
 nav ul {
     display: flex;
     list-style: none;
@@ -211,7 +209,6 @@ nav a.active::after {
     align-items: center;
 }
 
-/* Стили плюсов и минусов в карточках */
 .counter-box {
     display: flex;
     align-items: center;
@@ -250,7 +247,99 @@ nav a.active::after {
     text-align: center;
 }
 
-/* --- ПЛАВАЮЩИЙ НИЖНИЙ БЛОК ЗАКАЗА (по вашему эскизу) --- */
+.cart-popup {
+    position: fixed;
+    bottom: 95px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    width: 92%;
+    max-width: 700px;
+    background: #ffffff;
+    border: 2px solid #ca8a04;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cart-popup.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.cart-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #fef08a;
+    padding-bottom: 10px;
+}
+
+.cart-popup-header h3 {
+    font-size: 18px;
+    color: #713f12;
+}
+
+.close-popup-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #78716c;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-popup-btn:hover {
+    color: #451a03;
+}
+
+.cart-popup-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.popup-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fffbeb;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid #fef08a;
+}
+
+.popup-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.popup-item-name {
+    font-weight: 700;
+    color: #713f12;
+    font-size: 15px;
+}
+
+.popup-item-price {
+    font-size: 13px;
+    color: #78716c;
+}
+
+.popup-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .order-bar {
     position: fixed;
     bottom: 15px;
@@ -285,11 +374,13 @@ nav a.active::after {
     flex-direction: column;
     gap: 4px;
     flex: 1;
+    cursor: pointer;
 }
 
 .order-title-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 15px;
 }
 
@@ -301,6 +392,16 @@ nav a.active::after {
     letter-spacing: 0.5px;
     border-bottom: 2px solid #ca8a04;
     padding-bottom: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #a8a29e;
+    text-transform: none;
 }
 
 .order-total {
@@ -322,7 +423,6 @@ nav a.active::after {
     max-width: 380px;
 }
 
-/* Круглая кнопка отправки в WhatsApp */
 .whatsapp-btn {
     background-color: #25d366;
     color: white;
@@ -369,7 +469,6 @@ nav a.active::after {
     font-size: 18px;
 }
 
-/* Lightbox стили */
 .lightbox-modal {
     display: none;
     position: fixed;
@@ -439,5 +538,8 @@ footer {
     }
     .order-items-preview {
         max-width: 100%;
+    }
+    .popup-hint {
+        display: none;
     }
 }
