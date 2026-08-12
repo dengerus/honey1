@@ -10,8 +10,16 @@
     <div class="main-wrapper">
         <header>
             <div class="header-top">
-                <span class="header-emoji">🍯</span>
-                <a href="index.html" class="site-title">Натуральный мёд</a>
+                <div class="header-left-space"></div>
+                <div class="header-center-brand">
+                    <span class="header-emoji">🍯</span>
+                    <a href="index.html" class="site-title">Натуральный мёд</a>
+                </div>
+                <div class="header-right-action">
+                    <button id="favorites-toggle-btn" class="fav-icon-btn" title="Избранные заказы">
+                        🔖 <span id="fav-badge" class="fav-badge hidden">0</span>
+                    </button>
+                </div>
             </div>
             <nav>
                 <ul>
@@ -41,6 +49,18 @@
         </footer>
     </div>
 
+    <div id="favorites-popup" class="cart-popup hidden">
+        <div class="cart-popup-header">
+            <h3>🔖 Ваши сохраненные заказы</h3>
+            <button id="close-favorites-popup" class="close-popup-btn">&times;</button>
+        </div>
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+            <input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input">
+            <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
+        </div>
+        <div id="favorites-popup-items" class="cart-popup-items"></div>
+    </div>
+
     <div id="cart-popup" class="cart-popup hidden">
         <div class="cart-popup-header">
             <h3>Состав вашего заказа</h3>
@@ -53,13 +73,15 @@
         <div class="order-bar-content">
             <div id="order-bar-toggle" class="order-info">
                 <div class="order-title-row">
-                    <span class="order-heading">заказ <small class="popup-hint">(нажмите, чтобы изменить)</small></span>
+                    <span class="order-heading">
+                        заказ <span class="toggle-arrow">▲</span>
+                    </span>
                     <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
                 </div>
                 <div id="bar-items-text" class="order-items-preview">пусто</div>
             </div>
             <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
-                <span class="wa-text">отправить в Ватсап</span>
+                <span class="wa-text">в Ватсап</span>
                 <span class="wa-icon">➔</span>
             </button>
         </div>

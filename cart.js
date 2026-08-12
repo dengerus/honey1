@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const WHATSAPP_NUMBER = '77074242531';
     const STORAGE_KEY = 'honey_shop_cart_v1';
+    const FAV_STORAGE_KEY = 'honey_shop_favs_v1';
 
     let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    let favorites = JSON.parse(localStorage.getItem(FAV_STORAGE_KEY)) || [];
 
     const cards = document.querySelectorAll('.info-card');
     const orderBar = document.getElementById('order-bar');
@@ -14,6 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const orderBarToggle = document.getElementById('order-bar-toggle');
     const closePopupBtn = document.getElementById('close-cart-popup');
     const cartPopupItems = document.getElementById('cart-popup-items');
+
+    const favoritesToggleBtn = document.getElementById('favorites-toggle-btn');
+    const favoritesPopup = document.getElementById('favorites-popup');
+    const closeFavoritesPopup = document.getElementById('close-favorites-popup');
+    const favoritesPopupItems = document.getElementById('favorites-popup-items');
+    const favNameInput = document.getElementById('fav-name-input');
+    const saveCurrentFavBtn = document.getElementById('save-current-fav-btn');
+    const favBadge = document.getElementById('fav-badge');
 
     function updateUI() {
         let totalSum = 0;
@@ -70,7 +80,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cartPopup) cartPopup.classList.remove('active');
         }
 
+        updateFavoritesUI();
+
         localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    function updateFavoritesUI() {
+        if (favorites.length > 0) {
+            favBadge.textContent = favorites.length;
+            favBadge.classList.remove('hidden');
+        } else {
+            favBadge.classList.add('hidden');
+        }
+
+        if (favoritesPopupItems) {
+            let html = '';
+            if (favorites.length === 0) {
+                html = '<p style="text-align:center; color:#78716c; padding:10px;">Нет сохраненных заказов</p>';
+            } else {
+                favorites.forEach((fav, index) => {
+                    html += `
+                        <div class="fav-item-row">
+                            <div class="fav-item-info">
+                                <span class="fav-item-name">${fav.name}</span>
+                                <span class="fav-item-desc">${fav.summary} (${fav.total} ₽)</span>
+                            </div>
+                            <div class="fav-actions">
+                                <button class="fav-load-btn" data-index="${index}">Выбрать</button>
+                                <button class="fav-del-btn" data-index="${index}">✕</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            favoritesPopupItems.innerHTML = html;
+            attachFavoritesListeners();
+        }
     }
 
     cards.forEach(card => {
@@ -120,8 +165,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function attachFavoritesListeners() {
+        const loadBtns = favoritesPopupItems.querySelectorAll('.fav-load-btn');
+        const delBtns = favoritesPopupItems.querySelectorAll('.fav-del-btn');
+
+        loadBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = btn.dataset.index;
+                cart = { ...favorites[index].cartData };
+                favoritesPopup.classList.remove('active');
+                updateUI();
+            });
+        });
+
+        delBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = btn.dataset.index;
+                favorites.splice(index, 1);
+                localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(favorites));
+                updateFavoritesUI();
+            });
+        });
+    }
+
+    // Управление модалкой заказа
     if (orderBarToggle && cartPopup) {
         orderBarToggle.addEventListener('click', () => {
+            if (favoritesPopup) favoritesPopup.classList.remove('active');
             cartPopup.classList.toggle('active');
         });
     }
@@ -129,6 +199,59 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closePopupBtn && cartPopup) {
         closePopupBtn.addEventListener('click', () => {
             cartPopup.classList.remove('active');
+        });
+    }
+
+    // Управление модалкой избранного
+    if (favoritesToggleBtn && favoritesPopup) {
+        favoritesToggleBtn.addEventListener('click', () => {
+            if (cartPopup) cartPopup.classList.remove('active');
+            favoritesPopup.classList.toggle('active');
+        });
+    }
+
+    if (closeFavoritesPopup && favoritesPopup) {
+        closeFavoritesPopup.addEventListener('click', () => {
+            favoritesPopup.classList.remove('active');
+        });
+    }
+
+    // Сохранение в избранное
+    if (saveCurrentFavBtn) {
+        saveCurrentFavBtn.addEventListener('click', () => {
+            let totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
+            if (totalCount === 0) {
+                alert('Корзина пуста, нечего сохранять!');
+                return;
+            }
+
+            let customName = favNameInput.value.trim();
+            if (!customName) {
+                customName = `Набор #${favorites.length + 1}`;
+            }
+
+            let totalSum = 0;
+            let summaryArr = [];
+            cards.forEach(card => {
+                const id = card.dataset.id;
+                const qty = cart[id] || 0;
+                if (qty > 0) {
+                    totalSum += parseInt(card.dataset.price) * qty;
+                    summaryArr.push(`${card.dataset.name} x${qty}`);
+                }
+            });
+
+            favorites.push({
+                name: customName,
+                summary: summaryArr.join(', '),
+                total: totalSum,
+                cartData: { ...cart }
+            });
+
+            localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(favorites));
+            favNameInput.value = '';
+            updateFavoritesUI();
+            alert('Заказ успешно сохранен в избранное! 🔖');
         });
     }
 
