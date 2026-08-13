@@ -301,6 +301,56 @@ nav a.active::after {
     text-align: center;
 }
 
+.contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.contact-info-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: var(--card-radius);
+    border: 1px solid #fef08a;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.contact-info-card h2 {
+    color: #713f12;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.contact-info-card p {
+    color: #57534e;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.contact-details-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-details-list li {
+    font-size: 15px;
+    color: #451a03;
+}
+
+.contact-details-list a {
+    color: #ca8a04;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.contact-details-list a:hover {
+    text-decoration: underline;
+}
+
 .cart-popup {
     position: fixed;
     bottom: 95px;
@@ -385,6 +435,13 @@ nav a.active::after {
 
 .fav-save-btn:hover {
     background: #a16207;
+}
+
+.fav-subtitle-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000000;
+    padding-left: 2px;
 }
 
 .fav-item-row, .popup-item-row {
@@ -503,7 +560,15 @@ nav a.active::after {
     padding-bottom: 1px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+}
+
+.order-edit-hint {
+    font-size: 11px;
+    font-weight: 500;
+    color: #78716c;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 .toggle-arrow {
@@ -566,17 +631,6 @@ nav a.active::after {
     font-size: 15px;
 }
 
-.empty-page-box {
-    background: #ffffff;
-    padding: 50px;
-    border-radius: var(--card-radius);
-    border: 1px solid #fef08a;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    text-align: center;
-    color: #78716c;
-    font-size: 18px;
-}
-
 .lightbox-modal {
     display: none;
     position: fixed;
@@ -626,7 +680,7 @@ footer {
     body::before, body::after { width: 10px; }
     .main-wrapper { margin: 0; padding: 10px; }
     header { padding: 15px; margin-bottom: 20px; }
-    .honey-grid { grid-template-columns: 1fr; gap: 20px; }
+    .honey-grid, .contacts-grid { grid-template-columns: 1fr; gap: 20px; }
     .site-title { font-size: 22px; }
     nav a { font-size: 12px; padding: 10px 6px; }
     .info-card img { height: 200px; }

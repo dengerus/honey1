@@ -70,22 +70,24 @@ document.addEventListener('DOMContentLoaded', () => {
             attachPopupListeners();
         }
 
-        barTotalPrice.textContent = totalSum + ' ₽';
+        if (barTotalPrice) {
+            barTotalPrice.textContent = totalSum + ' ₽';
+        }
 
         if (totalCount > 0) {
-            barItemsText.textContent = itemsSummaryArray.join(', ');
-            orderBar.classList.remove('hidden');
+            if (barItemsText) barItemsText.textContent = itemsSummaryArray.join(', ');
+            if (orderBar) orderBar.classList.remove('hidden');
         } else {
-            orderBar.classList.add('hidden');
+            if (orderBar) orderBar.classList.add('hidden');
             if (cartPopup) cartPopup.classList.remove('active');
         }
 
         updateFavoritesUI();
-
         localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
     }
 
     function updateFavoritesUI() {
+        if (!favBadge) return;
         if (favorites.length > 0) {
             favBadge.textContent = favorites.length;
             favBadge.classList.remove('hidden');
@@ -188,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Управление модалкой заказа
     if (orderBarToggle && cartPopup) {
         orderBarToggle.addEventListener('click', () => {
             if (favoritesPopup) favoritesPopup.classList.remove('active');
@@ -202,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Управление модалкой избранного
     if (favoritesToggleBtn && favoritesPopup) {
         favoritesToggleBtn.addEventListener('click', () => {
             if (cartPopup) cartPopup.classList.remove('active');
@@ -216,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Сохранение в избранное
     if (saveCurrentFavBtn) {
         saveCurrentFavBtn.addEventListener('click', () => {
             let totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
