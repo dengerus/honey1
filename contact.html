@@ -307,7 +307,7 @@
             <div class="contact-card" style="margin-bottom: 40px;">
                 <div class="reviews-header-row">
                     <h2>Отзывы покупателей</h2>
-                    <div id="reviews-stats" class="reviews-stats">★ 5.0 / 5 (0 отзывов)</div>
+                    <div id="reviews-stats" class="reviews-stats">★ 0.0 / 5 (0 отзывов)</div>
                 </div>
                 <p style="color: #57534e; font-size: 15px; margin-bottom: 20px;">Нам важно ваше мнение! Оставьте отзыв о нашем алтайском мёде.</p>
                 
@@ -317,18 +317,18 @@
 
                 <form id="review-form" class="review-form">
                     <h3>Оставить свой отзыв</h3>
+                    <div class="rating-select-box" style="margin-bottom: 5px;">
+                        <span>Оценка:</span>
+                        <select id="review-rating">
+                            <option value="5">★★★★★ (5)</option>
+                            <option value="4">★★★★☆ (4)</option>
+                            <option value="3">★★★☆☆ (3)</option>
+                            <option value="2">★★☆☆☆ (2)</option>
+                            <option value="1">★☆☆☆☆ (1)</option>
+                        </select>
+                    </div>
                     <div class="form-row">
                         <input type="text" id="review-name" class="form-input" placeholder="Ваше имя" required autocomplete="off">
-                        <div class="rating-select-box">
-                            <span>Оценка:</span>
-                            <select id="review-rating">
-                                <option value="5">★★★★★ (5)</option>
-                                <option value="4">★★★★☆ (4)</option>
-                                <option value="3">★★★☆☆ (3)</option>
-                                <option value="2">★★☆☆☆ (2)</option>
-                                <option value="1">★☆☆☆☆ (1)</option>
-                            </select>
-                        </div>
                     </div>
                     <textarea id="review-text" class="form-textarea" placeholder="Напишите ваши впечатления о мёде..." required></textarea>
                     <div id="review-error" class="review-error">Пожалуйста, избегайте нецензурных слов в тексте и имени.</div>
