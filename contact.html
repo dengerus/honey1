@@ -1,346 +1,355 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // === ЛОГИКА ТОВАРОВ, СЧЕТЧИКОВ И ИЗБРАННОГО ===
-    const counters = document.querySelectorAll(".counter-box");
-    const orderBar = document.getElementById("order-bar");
-    const orderTotalEl = document.getElementById("order-total-price");
-    const orderItemsPreviewEl = document.getElementById("order-items-preview");
-    const whatsappBtn = document.getElementById("whatsapp-btn");
-    
-    const favoritesToggleBtn = document.getElementById("favorites-toggle-btn");
-    const favBadge = document.getElementById("fav-badge");
-    const cartPopup = document.getElementById("cart-popup");
-    const closePopupBtn = document.getElementById("close-popup-btn");
-    const cartPopupItems = document.getElementById("cart-popup-items");
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты и отзывы — Натуральный мёд</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .contact-container { grid-template-columns: 1fr; }
+        }
+        .contact-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: var(--card-radius);
+            border: 1px solid #fef08a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .contact-card h2 { color: #713f12; margin-bottom: 20px; }
+        .contact-item { margin-bottom: 20px; font-size: 16px; color: #57534e; }
+        .contact-item strong.dark-large {
+            display: block;
+            font-size: 20px;
+            color: #000000;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+        .wa-link {
+            display: inline-block;
+            background: #25d366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 8px;
+            transition: var(--transition);
+        }
+        .wa-link:hover { background: #20ba5a; transform: scale(1.05); }
+        
+        .map-section {
+            width: 100%;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            border: 2px solid #fef08a;
+            background: #fffbeb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 15px;
+        }
+        .map-wrapper-inner {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+        .navigator-btn-box {
+            padding-top: 15px;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffcc00;
+            color: #000000;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+            transition: var(--transition);
+        }
+        .nav-btn:hover {
+            background: #e6b800;
+            transform: scale(1.05);
+        }
 
-    let cart = {};
+        /* Стили блока отзывов */
+        .reviews-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .reviews-stats {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ca8a04;
+            background: #fffbeb;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #fde047;
+        }
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .review-card {
+            background: #fffbeb;
+            border: 1px solid #fef08a;
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+        }
+        .review-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .review-author {
+            font-weight: 800;
+            color: #713f12;
+            font-size: 16px;
+        }
+        .review-stars {
+            color: #eab308;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+        .review-text {
+            color: #57534e;
+            font-size: 15px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .review-date {
+            font-size: 12px;
+            color: #a8a29e;
+            margin-top: 8px;
+            display: block;
+        }
+        .review-del-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .review-del-btn:hover { background: #b91c1c; }
+        
+        .review-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #fffdf5;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #fef08a;
+            margin-top: 20px;
+        }
+        .review-form h3 { color: #713f12; font-size: 18px; }
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        @media (max-width: 600px) {
+            .form-row { flex-direction: column; }
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e7e5e4;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            background: #ffffff;
+            color: var(--text-brown);
+            outline: none;
+            transition: var(--transition);
+        }
+        .form-input:focus, .form-textarea:focus {
+            border-color: #ca8a04;
+            box-shadow: 0 0 0 3px rgba(202, 138, 4, 0.1);
+        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .rating-select-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: #713f12;
+            font-size: 14px;
+        }
+        .rating-select-box select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #e7e5e4;
+            background: #fff;
+            font-weight: 700;
+            color: #ca8a04;
+            cursor: pointer;
+        }
+        .review-submit-btn {
+            background: #ca8a04;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+        .review-submit-btn:hover { background: #a16207; transform: translateY(-2px); }
+        .review-error {
+            color: #dc2626;
+            font-size: 13px;
+            font-weight: 700;
+            display: none;
+        }
+        .no-reviews {
+            color: #78716c;
+            font-style: italic;
+            font-size: 15px;
+            text-align: center;
+            padding: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <header>
+            <div class="header-top">
+                <div class="header-center-brand">
+                    <span class="header-emoji">🍯</span>
+                    <a href="index.html" class="site-title">Натуральный мёд</a>
+                </div>
+                <div class="header-right-action">
+                    <div class="fav-btn-wrapper">
+                        <button id="favorites-toggle-btn" class="fav-icon-btn" title="Избранные заказы">
+                            🔖 <span id="fav-badge" class="fav-badge hidden">0</span>
+                        </button>
+                        <span class="fav-label-sub">избранное</span>
+                    </div>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Мед</a></li>
+                    <li><a href="about.html">Пасека</a></li>
+                    <li><a href="contact.html" class="active">Контакты и отзывы</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    if (counters.length > 0) {
-        counters.forEach(box => {
-            const minusBtn = box.querySelector(".minus");
-            const plusBtn = box.querySelector(".plus");
-            const valueEl = box.querySelector(".cnt-value");
-            const card = box.closest(".info-card");
+        <main>
+            <h1 class="page-heading">Контакты и отзывы</h1>
             
-            const id = card.dataset.id;
-            const name = card.dataset.name;
-            const price = parseInt(card.dataset.price);
-
-            cart[id] = { name, price, count: 0, element: valueEl };
-
-            plusBtn.addEventListener("click", () => {
-                cart[id].count++;
-                updateCart();
-            });
-
-            minusBtn.addEventListener("click", () => {
-                if (cart[id].count > 0) {
-                    cart[id].count--;
-                    updateCart();
-                }
-            });
-        });
-    }
-
-    function updateCart() {
-        let totalPrice = 0;
-        let totalCount = 0;
-        let summaryList = [];
-
-        for (let id in cart) {
-            let item = cart[id];
-            if (item.element) item.element.textContent = item.count;
-            if (item.count > 0) {
-                totalPrice += item.price * item.count;
-                totalCount += item.count;
-                summaryList.push(`${item.name} (${item.count} шт.)`);
-            }
-        }
-
-        if (orderBar) {
-            if (totalCount > 0) {
-                orderBar.classList.remove("hidden");
-                orderTotalEl.textContent = `${totalPrice} тг`;
-                orderItemsPreviewEl.textContent = summaryList.join(", ");
-            } else {
-                orderBar.classList.add("hidden");
-            }
-        }
-    }
-
-    if (whatsappBtn) {
-        whatsappBtn.addEventListener("click", () => {
-            let message = "Здравствуйте! Хочу сделать заказ мёда:%0A";
-            let totalPrice = 0;
-
-            for (let id in cart) {
-                let item = cart[id];
-                if (item.count > 0) {
-                    message += `- ${item.name}: ${item.count} шт. (${item.price * item.count} тг)%0A`;
-                    totalPrice += item.price * item.count;
-                }
-            }
-            message += `%0AИтого к оплате: ${totalPrice} тг`;
-            window.open(`https://wa.me/77074242531?text=${message}`, "_blank");
-        });
-    }
-
-    if (favoritesToggleBtn) {
-        favoritesToggleBtn.addEventListener("click", () => {
-            cartPopup.classList.toggle("active");
-            renderFavorites();
-        });
-    }
-
-    if (closePopupBtn) {
-        closePopupBtn.addEventListener("click", () => {
-            cartPopup.classList.remove("active");
-        });
-    }
-
-    function renderFavorites() {
-        if (!cartPopupItems) return;
-        cartPopupItems.innerHTML = "";
-        let savedFavs = JSON.parse(localStorage.getItem("honeyFavorites")) || [];
-
-        if (savedFavs.length === 0) {
-            cartPopupItems.innerHTML = `<p style="color: #78716c; text-align: center; padding: 10px;">Нет сохраненных заказов</p>`;
-            if (favBadge) favBadge.classList.add("hidden");
-            return;
-        }
-
-        if (favBadge) {
-            favBadge.classList.remove("hidden");
-            favBadge.textContent = savedFavs.length;
-        }
-
-        savedFavs.forEach((fav, index) => {
-            const row = document.createElement("div");
-            row.className = "popup-item-row";
-            row.innerHTML = `
-                <div class="popup-item-info">
-                    <span class="popup-item-name">Заказ #${index + 1}</span>
-                    <span class="popup-item-price">${fav.total} тг</span>
-                </div>
-                <div class="fav-actions">
-                    <button class="fav-load-btn" data-index="${index}">Загрузить</button>
-                    <button class="fav-del-btn" data-index="${index}">Удалить</button>
-                </div>
-            `;
-            cartPopupItems.appendChild(row);
-        });
-
-        document.querySelectorAll(".fav-load-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                let idx = e.target.dataset.index;
-                loadOrder(savedFavs[idx]);
-            });
-        });
-
-        document.querySelectorAll(".fav-del-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                let idx = e.target.dataset.index;
-                savedFavs.splice(idx, 1);
-                localStorage.setItem("honeyFavorites", JSON.stringify(savedFavs));
-                renderFavorites();
-            });
-        });
-    }
-
-    function loadOrder(favObj) {
-        for (let id in cart) {
-            cart[id].count = 0;
-        }
-        for (let id in favObj.items) {
-            if (cart[id]) {
-                cart[id].count = favObj.items[id];
-            }
-        }
-        updateCart();
-        cartPopup.classList.remove("active");
-    }
-
-    let initialFavs = JSON.parse(localStorage.getItem("honeyFavorites")) || [];
-    if (initialFavs.length > 0 && favBadge) {
-        favBadge.classList.remove("hidden");
-        favBadge.textContent = initialFavs.length;
-    }
-
-
-    // === ИНТЕРАКТИВНАЯ ЛОГИКА ОТЗЫВОВ С АДМИН-ДОСТУПОМ ===
-    const reviewForm = document.getElementById("review-form");
-    const reviewsListContainer = document.getElementById("reviews-list");
-    const editReviewIndexInput = document.getElementById("edit-review-index");
-    const reviewSubmitBtn = document.getElementById("review-submit-btn");
-    const reviewCancelBtn = document.getElementById("review-cancel-btn");
-    const reviewFormHeading = document.getElementById("review-form-heading");
-    const averageRatingBadge = document.getElementById("average-rating-badge");
-    const avgRatingValue = document.getElementById("avg-rating-value");
-    const avgRatingCount = document.getElementById("avg-rating-count");
-
-    // Секретные данные администратора (можешь изменить на свои)
-    const ADMIN_LOGIN = "AdminMaster";
-    const ADMIN_PASS = "SuperHoney2026!";
-
-    const badWords = [
-        "хуй", "пизд", "еб", "епт", "сук", "бля", "мраз", "урод", "сволоч", 
-        "fuck", "bitch", "shit", "хуе", "пидор", "залуп", "гондон", "блять"
-    ];
-
-    function containsBadWords(text) {
-        const lowerText = text.toLowerCase();
-        return badWords.some(word => lowerText.includes(word));
-    }
-
-    function renderReviews() {
-        if (!reviewsListContainer) return;
-        const reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-
-        if (reviews.length > 0) {
-            let sum = reviews.reduce((acc, item) => acc + Number(item.rating), 0);
-            let avg = (sum / reviews.length).toFixed(1);
-            if (avgRatingValue) avgRatingValue.textContent = avg;
-            if (avgRatingCount) avgRatingCount.textContent = `(${reviews.length})`;
-            if (averageRatingBadge) averageRatingBadge.classList.remove("hidden");
-        } else {
-            if (averageRatingBadge) averageRatingBadge.classList.add("hidden");
-        }
-
-        if (reviews.length === 0) {
-            reviewsListContainer.innerHTML = `<p style="color: #78716c; text-align: center; padding: 20px; font-weight: 600;">Пока отзывов нет</p>`;
-            return;
-        }
-
-        reviewsListContainer.innerHTML = reviews.map((r, index) => {
-            const starsString = '★'.repeat(Number(r.rating)) + '☆'.repeat(5 - Number(r.rating));
-            return `
-                <div class="review-card-item">
-                    <div class="review-card-header">
-                        <span class="review-author-name">${escapeHtml(r.name)}</span>
-                        <span class="review-card-stars" title="Оценка: ${r.rating} из 5">${starsString}</span>
+            <div class="contact-container">
+                <div class="contact-card">
+                    <h2>Свяжитесь с нами</h2>
+                    <div class="contact-item">
+                        <span>Адрес пасеки:</span>
+                        <strong class="dark-large">ул. Медовая, д. 15, предгорья Алтая, Алтайский край</strong>
                     </div>
-                    <div class="review-card-text">${escapeHtml(r.text)}</div>
-                    <div class="review-card-footer-actions">
-                        <button class="review-action-icon-btn edit-btn" onclick="window.prepEditReview(${index})" title="Редактировать отзыв">✏️</button>
-                        <button class="review-action-icon-btn delete-btn" onclick="window.prepDeleteReview(${index})" title="Удалить отзыв">🗑️</button>
+                    <div class="contact-item">
+                        <span>Владелец (Основной):</span><br>
+                        <strong class="dark-large">+7 (707) 424-25-31</strong>
+                        <a href="https://wa.me/77074242531" class="wa-link" target="_blank">Написать в WhatsApp</a>
+                    </div>
+                    <div class="contact-item">
+                        <span>Менеджер (Нерабочий):</span><br>
+                        <strong class="dark-large">+7 (777) 000-00-00</strong>
                     </div>
                 </div>
-            `;
-        }).join("");
-    }
 
-    function escapeHtml(text) {
-        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-        return text.replace(/[&<>"']/g, m => map[m]);
-    }
+                <div class="map-section">
+                    <div class="map-wrapper-inner">
+                        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A7a4f88db0485bc5de87b36b58801da5b4fd9fc494ad8d5574a7ae2726103ac67&amp;width=320&amp;height=240&amp;lang=ru_RU&amp;scroll=true"></script>
+                    </div>
+                    <div class="navigator-btn-box">
+                        <a href="https://yandex.ru/maps/?rtext=~51.900000,85.340000&rtt=auto" target="_blank" class="nav-btn">
+                            🚗 Открыть маршрут в Яндекс.Навигаторе
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-    if (reviewForm) {
-        reviewForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const nameVal = document.getElementById("review-name").value.trim();
-            const textVal = document.getElementById("review-text").value.trim();
-            const checkedStar = document.querySelector('input[name="rating"]:checked');
-            const ratingVal = checkedStar ? checkedStar.value : "5";
+            <!-- Блок отзывов -->
+            <div class="contact-card" style="margin-bottom: 40px;">
+                <div class="reviews-header-row">
+                    <h2>Отзывы покупателей</h2>
+                    <div id="reviews-stats" class="reviews-stats">★ 5.0 / 5 (0 отзывов)</div>
+                </div>
+                <p style="color: #57534e; font-size: 15px; margin-bottom: 20px;">Нам важно ваше мнение! Оставьте отзыв о нашем алтайском мёде.</p>
+                
+                <div id="reviews-list" class="reviews-list">
+                    <!-- Сюда динамически рендерятся отзывы -->
+                </div>
 
-            if (!nameVal || !textVal) return;
+                <form id="review-form" class="review-form">
+                    <h3>Оставить свой отзыв</h3>
+                    <div class="form-row">
+                        <input type="text" id="review-name" class="form-input" placeholder="Ваше имя" required autocomplete="off">
+                        <div class="rating-select-box">
+                            <span>Оценка:</span>
+                            <select id="review-rating">
+                                <option value="5">★★★★★ (5)</option>
+                                <option value="4">★★★★☆ (4)</option>
+                                <option value="3">★★★☆☆ (3)</option>
+                                <option value="2">★★☆☆☆ (2)</option>
+                                <option value="1">★☆☆☆☆ (1)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <textarea id="review-text" class="form-textarea" placeholder="Напишите ваши впечатления о мёде..." required></textarea>
+                    <div id="review-error" class="review-error">Пожалуйста, избегайте нецензурных слов в тексте и имени.</div>
+                    <button type="submit" class="review-submit-btn">Отправить отзыв</button>
+                </form>
+            </div>
+        </main>
 
-            // Проверка на админ-логин (если ввели логин, а в поле текста ввели пароль)
-            if (nameVal === ADMIN_LOGIN) {
-                if (textVal === ADMIN_PASS) {
-                    sessionStorage.setItem("isHoneyAdmin", "true");
-                    alert("Режим администратора активирован! Теперь вы можете удалять любые отзывы.");
-                    resetReviewFormState();
-                    renderReviews();
-                    return;
-                } else {
-                    alert("Неверный пароль администратора!");
-                    return;
-                }
-            }
+        <footer>
+            <p>&copy; 2026 Экспериментальный сайт о мёде. Все права защищены.</p>
+        </footer>
+    </div>
+    
+    <div id="cart-popup" class="cart-popup">
+        <div class="cart-popup-header">
+            <h3>Сохраненные заказы (Избранное)</h3>
+            <button id="close-popup-btn" class="close-popup-btn">&times;</button>
+        </div>
+        <div id="cart-popup-items" class="cart-popup-items"></div>
+    </div>
 
-            // Фильтр мата
-            if (containsBadWords(nameVal) || containsBadWords(textVal)) {
-                alert("Ошибка: Ваш отзыв содержит нецензурные слова или оскорбления. Сообщение не может быть опубликовано.");
-                return;
-            }
-
-            let reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-            const editIdx = parseInt(editReviewIndexInput.value);
-
-            const reviewData = { name: nameVal, text: textVal, rating: ratingVal };
-
-            if (editIdx > -1) {
-                reviews[editIdx] = reviewData;
-            } else {
-                reviews.unshift(reviewData);
-            }
-
-            localStorage.setItem("honeyReviews", JSON.stringify(reviews));
-            resetReviewFormState();
-            renderReviews();
-        });
-    }
-
-    window.prepEditReview = function(index) {
-        const reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-        const target = reviews[index];
-        if (!target) return;
-
-        document.getElementById("review-name").value = target.name;
-        document.getElementById("review-text").value = target.text;
-        
-        const starRadio = document.getElementById(`star${target.rating}`);
-        if (starRadio) starRadio.checked = true;
-
-        editReviewIndexInput.value = index;
-        if (reviewSubmitBtn) reviewSubmitBtn.textContent = "Сохранить изменения";
-        if (reviewCancelBtn) reviewCancelBtn.classList.remove("hidden");
-        if (reviewFormHeading) reviewFormHeading.textContent = "Редактировать отзыв";
-
-        reviewForm.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    window.prepDeleteReview = function(index) {
-        let reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-        const target = reviews[index];
-        if (!target) return;
-
-        // Проверяем: если это админ ИЛИ если пользователь удаляет свой личный отзыв
-        const isAdmin = sessionStorage.getItem("isHoneyAdmin") === "true";
-        
-        if (isAdmin) {
-            if (confirm("Вы вошли как администратор. Удалить этот отзыв?")) {
-                reviews.splice(index, 1);
-                localStorage.setItem("honeyReviews", JSON.stringify(reviews));
-                renderReviews();
-            }
-        } else {
-            // Обычный пользователь может удалить только указав свое имя или просто подтвердив (для простоты)
-            let userNameCheck = prompt("Введите ваше имя (указанное в отзыве) для удаления:");
-            if (userNameCheck && userNameCheck.trim().toLowerCase() === target.name.toLowerCase()) {
-                reviews.splice(index, 1);
-                localStorage.setItem("honeyReviews", JSON.stringify(reviews));
-                renderReviews();
-            } else {
-                alert("Имя не совпадает! Вы можете удалять только свои отзывы.");
-            }
-        }
-    };
-
-    if (reviewCancelBtn) {
-        reviewCancelBtn.addEventListener("click", () => {
-            resetReviewFormState();
-        });
-    }
-
-    function resetReviewFormState() {
-        if (reviewForm) reviewForm.reset();
-        if (editReviewIndexInput) editReviewIndexInput.value = "-1";
-        if (reviewSubmitBtn) reviewSubmitBtn.textContent = "Опубликовать отзыв";
-        if (reviewCancelBtn) reviewCancelBtn.classList.add("hidden");
-        if (reviewFormHeading) reviewFormHeading.textContent = "Оставить отзыв";
-        const star5 = document.getElementById("star5");
-        if (star5) star5.checked = true;
-    }
-
-    renderReviews();
-});
+    <script src="cart.js"></script>
+</body>
+</html>

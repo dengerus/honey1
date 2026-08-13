@@ -1,125 +1,140 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // === ЛОГИКА ТОВАРОВ, СЧЕТЧИКОВ И ИЗБРАННОГО ===
-    const counters = document.querySelectorAll(".counter-box");
-    const orderBar = document.getElementById("order-bar");
-    const orderTotalEl = document.getElementById("order-total-price");
-    const orderItemsPreviewEl = document.getElementById("order-items-preview");
-    const whatsappBtn = document.getElementById("whatsapp-btn");
-    
-    const favoritesToggleBtn = document.getElementById("favorites-toggle-btn");
-    const favBadge = document.getElementById("fav-badge");
-    const cartPopup = document.getElementById("cart-popup");
-    const closePopupBtn = document.getElementById("close-popup-btn");
-    const cartPopupItems = document.getElementById("cart-popup-items");
+document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. ЛОГИКА КОРЗИНЫ И ИЗБРАННОГО (index.html) ---
+    const cards = document.querySelectorAll('.info-card');
+    const orderBar = document.getElementById('order-bar');
+    const orderItemsPreview = document.getElementById('order-items-preview');
+    const orderTotalPrice = document.getElementById('order-total-price');
+    const whatsappBtn = document.getElementById('whatsapp-btn');
+    const favoritesToggleBtn = document.getElementById('favorites-toggle-btn');
+    const favBadge = document.getElementById('fav-badge');
+    const cartPopup = document.getElementById('cart-popup');
+    const closePopupBtn = document.getElementById('close-popup-btn');
+    const cartPopupItems = document.getElementById('cart-popup-items');
+    const orderBarToggle = document.getElementById('order-bar-toggle');
 
-    let cart = {};
+    let cart = {}; // Ключ - ID товара, значение - количество (кг)
+    let favorites = JSON.parse(localStorage.getItem('honey_favorites')) || [];
 
-    if (counters.length > 0) {
-        counters.forEach(box => {
-            const minusBtn = box.querySelector(".minus");
-            const plusBtn = box.querySelector(".plus");
-            const valueEl = box.querySelector(".cnt-value");
-            const card = box.closest(".info-card");
-            
+    function updateOrderBar() {
+        if (!orderBar) return;
+        let totalCount = 0;
+        let totalPrice = 0;
+        let previewTextArr = [];
+
+        cards.forEach(card => {
             const id = card.dataset.id;
             const name = card.dataset.name;
             const price = parseInt(card.dataset.price);
+            const qty = cart[id] || 0;
 
-            cart[id] = { name, price, count: 0, element: valueEl };
+            const cntValue = card.querySelector('.cnt-value');
+            if (cntValue) cntValue.textContent = qty;
 
-            plusBtn.addEventListener("click", () => {
-                cart[id].count++;
-                updateCart();
+            if (qty > 0) {
+                totalCount += qty;
+                totalPrice += qty * price;
+                previewTextArr.push(`${name} (${qty} кг)`);
+            }
+        });
+
+        if (totalCount > 0) {
+            orderBar.classList.remove('hidden');
+            if (orderItemsPreview) orderItemsPreview.textContent = previewTextArr.join(', ');
+            if (orderTotalPrice) orderTotalPrice.textContent = totalPrice + ' тг';
+        } else {
+            orderBar.classList.add('hidden');
+            if (cartPopup) cartPopup.classList.remove('active');
+        }
+
+        updateFavBadge();
+    }
+
+    cards.forEach(card => {
+        const id = card.dataset.id;
+        const plusBtn = card.querySelector('.cnt-btn.plus');
+        const minusBtn = card.querySelector('.cnt-btn.minus');
+
+        if (plusBtn) {
+            plusBtn.addEventListener('click', () => {
+                cart[id] = (cart[id] || 0) + 1;
+                updateOrderBar();
             });
+        }
 
-            minusBtn.addEventListener("click", () => {
-                if (cart[id].count > 0) {
-                    cart[id].count--;
-                    updateCart();
+        if (minusBtn) {
+            minusBtn.addEventListener('click', () => {
+                if (cart[id] && cart[id] > 0) {
+                    cart[id]--;
+                    if (cart[id] === 0) delete cart[id];
+                    updateOrderBar();
                 }
             });
+        }
+    });
+
+    if (orderBarToggle && cartPopup) {
+        orderBarToggle.addEventListener('click', (e) => {
+            if (e.target.closest('#whatsapp-btn')) return;
+            let currentOrderData = {};
+            let hasItems = false;
+            cards.forEach(card => {
+                const id = card.dataset.id;
+                if (cart[id] && cart[id] > 0) {
+                    currentOrderData[id] = cart[id];
+                    hasItems = true;
+                }
+            });
+
+            if (hasItems) {
+                const orderName = prompt('Введите название для сохранения этого заказа в избранное:', 'Мой заказ от ' + new Date().toLocaleDateString());
+                if (orderName) {
+                    favorites.push({ name: orderName, items: currentOrderData, date: new Date().toLocaleDateString() });
+                    localStorage.setItem('honey_favorites', JSON.stringify(favorites));
+                    updateFavBadge();
+                    alert('Заказ успешно сохранен в избранное!');
+                }
+            }
         });
     }
 
-    function updateCart() {
-        let totalPrice = 0;
-        let totalCount = 0;
-        let summaryList = [];
-
-        for (let id in cart) {
-            let item = cart[id];
-            if (item.element) item.element.textContent = item.count;
-            if (item.count > 0) {
-                totalPrice += item.price * item.count;
-                totalCount += item.count;
-                summaryList.push(`${item.name} (${item.count} шт.)`);
-            }
-        }
-
-        if (orderBar) {
-            if (totalCount > 0) {
-                orderBar.classList.remove("hidden");
-                orderTotalEl.textContent = `${totalPrice} тг`;
-                orderItemsPreviewEl.textContent = summaryList.join(", ");
-            } else {
-                orderBar.classList.add("hidden");
-            }
+    function updateFavBadge() {
+        if (!favBadge) return;
+        if (favorites.length > 0) {
+            favBadge.textContent = favorites.length;
+            favBadge.classList.remove('hidden');
+        } else {
+            favBadge.classList.add('hidden');
         }
     }
 
-    if (whatsappBtn) {
-        whatsappBtn.addEventListener("click", () => {
-            let message = "Здравствуйте! Хочу сделать заказ мёда:%0A";
-            let totalPrice = 0;
-
-            for (let id in cart) {
-                let item = cart[id];
-                if (item.count > 0) {
-                    message += `- ${item.name}: ${item.count} шт. (${item.price * item.count} тг)%0A`;
-                    totalPrice += item.price * item.count;
-                }
-            }
-            message += `%0AИтого к оплате: ${totalPrice} тг`;
-            window.open(`https://wa.me/77074242531?text=${message}`, "_blank");
-        });
-    }
-
-    if (favoritesToggleBtn) {
-        favoritesToggleBtn.addEventListener("click", () => {
-            cartPopup.classList.toggle("active");
+    if (favoritesToggleBtn && cartPopup) {
+        favoritesToggleBtn.addEventListener('click', () => {
             renderFavorites();
+            cartPopup.classList.toggle('active');
         });
     }
 
-    if (closePopupBtn) {
-        closePopupBtn.addEventListener("click", () => {
-            cartPopup.classList.remove("active");
+    if (closePopupBtn && cartPopup) {
+        closePopupBtn.addEventListener('click', () => {
+            cartPopup.classList.remove('active');
         });
     }
 
     function renderFavorites() {
         if (!cartPopupItems) return;
-        cartPopupItems.innerHTML = "";
-        let savedFavs = JSON.parse(localStorage.getItem("honeyFavorites")) || [];
-
-        if (savedFavs.length === 0) {
-            cartPopupItems.innerHTML = `<p style="color: #78716c; text-align: center; padding: 10px;">Нет сохраненных заказов</p>`;
-            if (favBadge) favBadge.classList.add("hidden");
+        cartPopupItems.innerHTML = '';
+        if (favorites.length === 0) {
+            cartPopupItems.innerHTML = '<div class="no-reviews">Нет сохраненных заказов.</div>';
             return;
         }
 
-        if (favBadge) {
-            favBadge.classList.remove("hidden");
-            favBadge.textContent = savedFavs.length;
-        }
-
-        savedFavs.forEach((fav, index) => {
-            const row = document.createElement("div");
-            row.className = "popup-item-row";
+        favorites.forEach((fav, index) => {
+            const row = document.createElement('div');
+            row.className = 'fav-item-row';
             row.innerHTML = `
-                <div class="popup-item-info">
-                    <span class="popup-item-name">Заказ #${index + 1}</span>
-                    <span class="popup-item-price">${fav.total} тг</span>
+                <div class="fav-item-info">
+                    <span class="fav-item-name">${fav.name}</span>
+                    <span class="fav-item-desc">Сохранен: ${fav.date}</span>
                 </div>
                 <div class="fav-actions">
                     <button class="fav-load-btn" data-index="${index}">Загрузить</button>
@@ -129,184 +144,162 @@ document.addEventListener("DOMContentLoaded", () => {
             cartPopupItems.appendChild(row);
         });
 
-        document.querySelectorAll(".fav-load-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                let idx = e.target.dataset.index;
-                loadOrder(savedFavs[idx]);
+        cartPopupItems.querySelectorAll('.fav-load-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = e.target.dataset.index;
+                cart = { ...favorites[idx].items };
+                updateOrderBar();
+                cartPopup.classList.remove('active');
             });
         });
 
-        document.querySelectorAll(".fav-del-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                let idx = e.target.dataset.index;
-                savedFavs.splice(idx, 1);
-                localStorage.setItem("honeyFavorites", JSON.stringify(savedFavs));
+        cartPopupItems.querySelectorAll('.fav-del-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = e.target.dataset.index;
+                favorites.splice(idx, 1);
+                localStorage.setItem('honey_favorites', JSON.stringify(favorites));
                 renderFavorites();
+                updateFavBadge();
             });
         });
     }
 
-    function loadOrder(favObj) {
-        for (let id in cart) {
-            cart[id].count = 0;
-        }
-        for (let id in favObj.items) {
-            if (cart[id]) {
-                cart[id].count = favObj.items[id];
-            }
-        }
-        updateCart();
-        cartPopup.classList.remove("active");
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', () => {
+            let message = 'Здравствуйте! Хочу сделать заказ мёда:\n';
+            let total = 0;
+            cards.forEach(card => {
+                const id = card.dataset.id;
+                const name = card.dataset.name;
+                const price = parseInt(card.dataset.price);
+                const qty = cart[id] || 0;
+                if (qty > 0) {
+                    message += `- ${name}: ${qty} кг (${qty * price} тг)\n`;
+                    total += qty * price;
+                }
+            });
+            message += `\nИтого к оплате: ${total} тг`;
+            const phone = '77074242531';
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        });
     }
 
-    let initialFavs = JSON.parse(localStorage.getItem("honeyFavorites")) || [];
-    if (initialFavs.length > 0 && favBadge) {
-        favBadge.classList.remove("hidden");
-        favBadge.textContent = initialFavs.length;
-    }
+    updateOrderBar();
 
 
-    // === ИНТЕРАКТИВНАЯ ЛОГИКА ОТЗЫВОВ С ФИЛЬТРОМ МАТА И СРЕДНЕЙ ОЦЕНКОЙ ===
-    const reviewForm = document.getElementById("review-form");
-    const reviewsListContainer = document.getElementById("reviews-list");
-    const editReviewIndexInput = document.getElementById("edit-review-index");
-    const reviewSubmitBtn = document.getElementById("review-submit-btn");
-    const reviewCancelBtn = document.getElementById("review-cancel-btn");
-    const reviewFormHeading = document.getElementById("review-form-heading");
-    const averageRatingBadge = document.getElementById("average-rating-badge");
-    const avgRatingValue = document.getElementById("avg-rating-value");
-    const avgRatingCount = document.getElementById("avg-rating-count");
+    // --- 2. ЛОГИКА ИНТЕРАКТИВНЫХ ОТЗЫВОВ (contact.html) ---
+    const reviewsList = document.getElementById('reviews-list');
+    const reviewForm = document.getElementById('review-form');
+    const reviewsStats = document.getElementById('reviews-stats');
+    const reviewError = document.getElementById('review-error');
 
-    // Список запрещенных слов (базовый фильтр нецензурных выражений)
-    const badWords = [
-        "хуй", "пизд", "еб", "епт", "сук", "бля", "мраз", "урод", "сволоч", 
-        "fuck", "bitch", "shit", "хуе", "пидор", "залуп", "гондон", "блять"
+    // Базовый список отзывов по умолчанию, если localStorage пуст
+    let defaultReviews = [
+        { id: 1, name: 'Алексей Смирнов', rating: 5, text: 'Потрясающий горный мёд! Очень ароматный, густой. Доставили быстро в Алматы. Спасибо пасеке за качество!', date: '10.05.2026' },
+        { id: 2, name: 'Елена Васильева', rating: 5, text: 'Берем гречишный мёд уже во второй раз. Вся семья в восторге, чувствуется натуральность и богатый вкус.', date: '18.05.2026' }
     ];
 
-    function containsBadWords(text) {
-        const lowerText = text.toLowerCase();
-        return badWords.some(word => lowerText.includes(word));
+    let reviews = JSON.parse(localStorage.getItem('honey_reviews')) || defaultReviews;
+
+    // Простая система фильтрации мата (клиентская безопасность)
+    const badWords = ['сука', 'блять', 'хуй', 'пизда', 'ебать', 'мрачь', 'дура', 'суки', 'дебил'];
+    function containsProfanity(text) {
+        const lower = text.toLowerCase();
+        return badWords.some(word => lower.includes(word));
     }
 
     function renderReviews() {
-        if (!reviewsListContainer) return;
-        const reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
+        if (!reviewsList) return;
+        reviewsList.innerHTML = '';
 
-        // Пересчет средней оценки и управление плашкой
-        if (reviews.length > 0) {
-            let sum = reviews.reduce((acc, item) => acc + Number(item.rating), 0);
-            let avg = (sum / reviews.length).toFixed(1);
-            if (avgRatingValue) avgRatingValue.textContent = avg;
-            if (avgRatingCount) avgRatingCount.textContent = `(${reviews.length})`;
-            if (averageRatingBadge) averageRatingBadge.classList.remove("hidden");
-        } else {
-            if (averageRatingBadge) averageRatingBadge.classList.add("hidden");
-        }
-
-        // Если отзывов нет
         if (reviews.length === 0) {
-            reviewsListContainer.innerHTML = `<p style="color: #78716c; text-align: center; padding: 20px; font-weight: 600;">Пока отзывов нет</p>`;
+            reviewsList.innerHTML = '<div class="no-reviews">Пока отзывов нет. Будьте первыми!</div>';
+            if (reviewsStats) reviewsStats.textContent = `★ 0.0 / 5 (0 отзывов)`;
             return;
         }
 
-        reviewsListContainer.innerHTML = reviews.map((r, index) => {
-            const starsString = '★'.repeat(Number(r.rating)) + '☆'.repeat(5 - Number(r.rating));
-            return `
-                <div class="review-card-item">
-                    <div class="review-card-header">
-                        <span class="review-author-name">${escapeHtml(r.name)}</span>
-                        <span class="review-card-stars" title="Оценка: ${r.rating} из 5">${starsString}</span>
-                    </div>
-                    <div class="review-card-text">${escapeHtml(r.text)}</div>
-                    <div class="review-card-footer-actions">
-                        <button class="review-action-icon-btn edit-btn" onclick="window.prepEditReview(${index})" title="Редактировать отзыв">✏️</button>
-                        <button class="review-action-icon-btn delete-btn" onclick="window.prepDeleteReview(${index})" title="Удалить отзыв">🗑️</button>
-                    </div>
-                </div>
-            `;
-        }).join("");
-    }
+        let totalRating = 0;
+        reviews.forEach(rev => totalRating += Number(rev.rating));
+        let avgRating = (totalRating / reviews.length).toFixed(1);
+        if (reviewsStats) reviewsStats.textContent = `★ ${avgRating} / 5 (${reviews.length} отзывов)`;
 
-    function escapeHtml(text) {
-        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-        return text.replace(/[&<>"']/g, m => map[m]);
+        const isAdmin = sessionStorage.getItem('honey_admin_logged') === 'true';
+
+        reviews.forEach((rev) => {
+            const card = document.createElement('div');
+            card.className = 'review-card';
+            
+            let starsStr = '★★★★★'.slice(0, rev.rating) + '☆☆☆☆☆'.slice(0, 5 - rev.rating);
+            
+            // Кнопка удаления видна админу или автору (если имя совпадает, упрощенно)
+            let deleteBtnHTML = '';
+            if (isAdmin) {
+                deleteBtnHTML = `<button class="review-del-btn" data-id="${rev.id}">Удалить (Админ)</button>`;
+            }
+
+            card.innerHTML = `
+                <div class="review-top">
+                    <span class="review-author">${rev.name}</span>
+                    <span class="review-stars">${starsStr}</span>
+                </div>
+                <div class="review-text">${rev.text}</div>
+                <span class="review-date">${rev.date}</span>
+                ${deleteBtnHTML}
+            `;
+            reviewsList.appendChild(card);
+        });
+
+        // Навешиваем удаление отзывов
+        reviewsList.querySelectorAll('.review-del-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = Number(e.target.dataset.id);
+                reviews = reviews.filter(r => r.id !== id);
+                localStorage.setItem('honey_reviews', JSON.stringify(reviews));
+                renderReviews();
+            });
+        });
     }
 
     if (reviewForm) {
-        reviewForm.addEventListener("submit", (e) => {
+        reviewForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const nameVal = document.getElementById("review-name").value.trim();
-            const textVal = document.getElementById("review-text").value.trim();
-            const checkedStar = document.querySelector('input[name="rating"]:checked');
-            const ratingVal = checkedStar ? checkedStar.value : "5";
+            const nameInput = document.getElementById('review-name');
+            const textInput = document.getElementById('review-text');
+            const ratingSelect = document.getElementById('review-rating');
 
-            if (!nameVal || !textVal) return;
+            const nameVal = nameInput.value.trim();
+            const textVal = textInput.value.trim();
+            const ratingVal = parseInt(ratingSelect.value);
 
-            // Проверка на нецензурные слова
-            if (containsBadWords(nameVal) || containsBadWords(textVal)) {
-                alert("Ошибка: Ваш отзыв содержит нецензурные слова или оскорбления. Сообщение не может быть опубликовано.");
+            // Скрытая активация админки: если ввести имя "ADMIN" и пароль в текст "SECRET123"
+            if (nameVal.toUpperCase() === 'ADMIN' && textVal === 'SECRET123') {
+                sessionStorage.setItem('honey_admin_logged', 'true');
+                alert('Режим администратора активирован! Теперь вы можете удалять отзывы.');
+                reviewForm.reset();
+                renderReviews();
                 return;
             }
 
-            let reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-            const editIdx = parseInt(editReviewIndexInput.value);
-
-            const reviewData = { name: nameVal, text: textVal, rating: ratingVal };
-
-            if (editIdx > -1) {
-                reviews[editIdx] = reviewData;
-            } else {
-                reviews.unshift(reviewData); // Новые сверху
+            // Проверка на мат
+            if (containsProfanity(nameVal) || containsProfanity(textVal)) {
+                if (reviewError) reviewError.style.display = 'block';
+                return;
             }
+            if (reviewError) reviewError.style.display = 'none';
 
-            localStorage.setItem("honeyReviews", JSON.stringify(reviews));
-            resetReviewFormState();
+            const newReview = {
+                id: Date.now(),
+                name: nameVal,
+                rating: ratingVal,
+                text: textVal,
+                date: new Date().toLocaleDateString()
+            };
+
+            reviews.unshift(newReview);
+            localStorage.setItem('honey_reviews', JSON.stringify(reviews));
+            reviewForm.reset();
             renderReviews();
         });
-    }
-
-    window.prepEditReview = function(index) {
-        const reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-        const target = reviews[index];
-        if (!target) return;
-
-        document.getElementById("review-name").value = target.name;
-        document.getElementById("review-text").value = target.text;
-        
-        const starRadio = document.getElementById(`star${target.rating}`);
-        if (starRadio) starRadio.checked = true;
-
-        editReviewIndexInput.value = index;
-        if (reviewSubmitBtn) reviewSubmitBtn.textContent = "Сохранить изменения";
-        if (reviewCancelBtn) reviewCancelBtn.classList.remove("hidden");
-        if (reviewFormHeading) reviewFormHeading.textContent = "Редактировать отзыв";
-
-        reviewForm.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    window.prepDeleteReview = function(index) {
-        if (confirm("Вы уверены, что хотите удалить этот отзыв?")) {
-            let reviews = JSON.parse(localStorage.getItem("honeyReviews")) || [];
-            reviews.splice(index, 1);
-            localStorage.setItem("honeyReviews", JSON.stringify(reviews));
-            renderReviews();
-        }
-    };
-
-    if (reviewCancelBtn) {
-        reviewCancelBtn.addEventListener("click", () => {
-            resetReviewFormState();
-        });
-    }
-
-    function resetReviewFormState() {
-        if (reviewForm) reviewForm.reset();
-        if (editReviewIndexInput) editReviewIndexInput.value = "-1";
-        if (reviewSubmitBtn) reviewSubmitBtn.textContent = "Опубликовать отзыв";
-        if (reviewCancelBtn) reviewCancelBtn.classList.add("hidden");
-        if (reviewFormHeading) reviewFormHeading.textContent = "Оставить отзыв";
-        const star5 = document.getElementById("star5");
-        if (star5) star5.checked = true;
     }
 
     renderReviews();
