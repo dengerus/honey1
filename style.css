@@ -34,13 +34,13 @@ body::before, body::after {
     z-index: -1;
     background-color: #fef9c3;
     background-image: radial-gradient(circle farthest-side at 10% 90%, #fffbeb, transparent),
-                        radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
-                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
-                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
+                      radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
+                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
+                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
     background-size: 30px 52px;
     background-position: 0 0, 0 0, 0 0, 0 0, 15px 26px, 15px 26px, 0 0, 15px 26px;
     opacity: 0.7;
@@ -255,8 +255,6 @@ nav a.active::after {
     border-radius: 12px;
     margin-bottom: 20px;
     background-color: #fef08a;
-    cursor: zoom-in;
-    transition: var(--transition);
 }
 
 .info-card h3 {
@@ -322,14 +320,15 @@ nav a.active::after {
     text-align: center;
 }
 
-.contacts-grid {
+/* Контакты и карта */
+.contact-container {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
-.contact-info-card {
+.contact-card {
     background: #ffffff;
     padding: 30px;
     border-radius: var(--card-radius);
@@ -337,41 +336,314 @@ nav a.active::after {
     box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
 
-.contact-info-card h2 {
-    color: #713f12;
-    font-size: 22px;
-    margin-bottom: 15px;
+.contact-card h2 { color: #713f12; margin-bottom: 20px; }
+.contact-item { margin-bottom: 20px; font-size: 16px; color: #57534e; }
+.contact-item strong.dark-large {
+    display: block;
+    font-size: 20px;
+    color: #000000;
+    font-weight: 800;
+    margin-top: 4px;
 }
 
-.contact-info-card p {
-    color: #57534e;
-    font-size: 15px;
-    line-height: 1.6;
+.wa-link {
+    display: inline-block;
+    background: #25d366;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 8px;
+    transition: var(--transition);
+}
+.wa-link:hover { background: #20ba5a; transform: scale(1.05); }
+
+.map-section {
+    width: 100%;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    border: 2px solid #fef08a;
+    background: #fffbeb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.map-wrapper-inner {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.navigator-btn-box {
+    padding-top: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffcc00;
+    color: #000000;
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+    transition: var(--transition);
+}
+.nav-btn:hover { background: #e6b800; transform: scale(1.05); }
+
+/* СЕКЦИЯ И ФОРМА ОТЗЫВОВ */
+.reviews-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.contact-details-list {
-    list-style: none;
+.reviews-section-header h2 {
+    margin-bottom: 0 !important;
+}
+
+.average-rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fffbeb;
+    border: 1px solid #fde047;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 16px;
+    color: #713f12;
+}
+
+.average-rating-badge.hidden {
+    display: none;
+}
+
+.avg-stars {
+    color: #eab308;
+    font-size: 18px;
+}
+
+.avg-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #78716c;
+}
+
+.review-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.contact-details-list li {
+.review-form-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.review-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.review-input-group label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #713f12;
+}
+
+.review-input-group input,
+.review-input-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #fde047;
+    background: #fffbeb;
+    font-family: inherit;
     font-size: 15px;
     color: #451a03;
+    transition: var(--transition);
 }
 
-.contact-details-list a {
-    color: #ca8a04;
-    text-decoration: none;
+.review-input-group input:focus,
+.review-input-group textarea:focus {
+    outline: none;
+    border-color: #ca8a04;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(202, 138, 4, 0.15);
+}
+
+.review-stars-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 26px;
+    color: #d1d5db;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0 2px;
+    line-height: 1;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #eab308;
+}
+
+.review-form-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.submit-review-btn {
+    background: #ca8a04;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
     font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(202, 138, 4, 0.2);
 }
 
-.contact-details-list a:hover {
-    text-decoration: underline;
+.submit-review-btn:hover {
+    background: #a16207;
+    transform: translateY(-2px);
 }
 
+.cancel-review-btn {
+    background: #e7e5e4;
+    color: #57534e;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.cancel-review-btn:hover {
+    background: #d6d3d1;
+}
+
+.cancel-review-btn.hidden, .fav-badge.hidden, .order-bar.hidden {
+    display: none;
+}
+
+.reviews-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.review-card-item {
+    background: #fffbeb;
+    border: 1px solid #fef08a;
+    border-radius: 12px;
+    padding: 18px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-author-name {
+    font-weight: 800;
+    font-size: 17px;
+    color: #713f12;
+}
+
+.review-card-stars {
+    color: #eab308;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.review-card-text {
+    font-size: 15px;
+    color: #57534e;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.review-card-footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 5px;
+    border-top: 1px dashed #fde047;
+    padding-top: 10px;
+}
+
+.review-action-icon-btn {
+    background: #ffffff;
+    border: 1px solid #e7e5e4;
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.review-action-icon-btn.edit-btn:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    transform: scale(1.05);
+}
+
+.review-action-icon-btn.delete-btn:hover {
+    background: #fef2f2;
+    border-color: #fecaca;
+    transform: scale(1.05);
+}
+
+/* Корзина / Избранное / Попапы / Нижняя планка заказа */
 .cart-popup {
     position: fixed;
     bottom: 95px;
@@ -419,9 +691,7 @@ nav a.active::after {
     line-height: 1;
 }
 
-.close-popup-btn:hover {
-    color: #451a03;
-}
+.close-popup-btn:hover { color: #451a03; }
 
 .cart-popup-items {
     display: flex;
@@ -432,33 +702,7 @@ nav a.active::after {
     padding-right: 5px;
 }
 
-.fav-input {
-    flex: 1;
-    padding: 8px 12px;
-    border: 1px solid #ca8a04;
-    border-radius: 10px;
-    font-size: 14px;
-    outline: none;
-    background: #fffbeb;
-}
-
-.fav-save-btn {
-    background: #ca8a04;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 13px;
-    transition: var(--transition);
-}
-
-.fav-save-btn:hover {
-    background: #a16207;
-}
-
-.fav-item-row, .popup-item-row {
+.popup-item-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -468,19 +712,19 @@ nav a.active::after {
     border: 1px solid #fef08a;
 }
 
-.popup-item-info, .fav-item-info {
+.popup-item-info {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.popup-item-name, .fav-item-name {
+.popup-item-name {
     font-weight: 700;
     color: #713f12;
     font-size: 15px;
 }
 
-.popup-item-price, .fav-item-desc {
+.popup-item-price {
     font-size: 13px;
     color: #78716c;
 }
@@ -500,10 +744,7 @@ nav a.active::after {
     font-size: 12px;
     cursor: pointer;
 }
-
-.fav-load-btn:hover {
-    background: #1d4ed8;
-}
+.fav-load-btn:hover { background: #1d4ed8; }
 
 .fav-del-btn {
     background: #dc2626;
@@ -515,10 +756,7 @@ nav a.active::after {
     font-size: 12px;
     cursor: pointer;
 }
-
-.fav-del-btn:hover {
-    background: #b91c1c;
-}
+.fav-del-btn:hover { background: #b91c1c; }
 
 .order-bar {
     position: fixed;
@@ -534,12 +772,6 @@ nav a.active::after {
     z-index: 999;
     padding: 12px 20px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.order-bar.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-50%) translateY(30px);
 }
 
 .order-bar-content {
@@ -561,7 +793,6 @@ nav a.active::after {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
 }
 
 .order-heading {
@@ -573,14 +804,6 @@ nav a.active::after {
     display: flex;
     align-items: center;
     gap: 6px;
-}
-
-.order-edit-hint {
-    font-size: 12px;
-    font-weight: 600;
-    color: #78716c;
-    text-transform: none;
-    letter-spacing: normal;
 }
 
 .order-total {
@@ -618,11 +841,7 @@ nav a.active::after {
     transition: var(--transition);
     white-space: nowrap;
 }
-
-.whatsapp-btn:hover {
-    background-color: #20ba5a;
-    transform: scale(1.05);
-}
+.whatsapp-btn:hover { background-color: #20ba5a; transform: scale(1.05); }
 
 .wa-icon {
     background: white;
@@ -635,42 +854,6 @@ nav a.active::after {
     justify-content: center;
     font-weight: 900;
     font-size: 15px;
-}
-
-.lightbox-modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(5px);
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.lightbox-modal.active {
-    display: flex;
-}
-
-.lightbox-content {
-    max-width: 90%;
-    max-height: 90vh;
-    border-radius: 12px;
-    border: 2px solid #fef08a;
-    object-fit: contain;
-}
-
-.lightbox-close {
-    position: absolute;
-    top: 25px;
-    right: 35px;
-    color: #ffffff;
-    font-size: 40px;
-    cursor: pointer;
 }
 
 footer {
@@ -686,32 +869,17 @@ footer {
     body::before, body::after { width: 10px; }
     .main-wrapper { margin: 0; padding: 10px; }
     header { padding: 15px; margin-bottom: 20px; }
-    .honey-grid, .contacts-grid { grid-template-columns: 1fr; gap: 20px; }
-    
-    .site-title { 
-        font-size: 20px; 
-    }
-    .header-emoji {
-        font-size: 26px;
-    }
-    
+    .honey-grid { grid-template-columns: 1fr; gap: 20px; }
+    .site-title { font-size: 20px; }
+    .header-emoji { font-size: 26px; }
     nav a { font-size: 12px; padding: 10px 6px; }
-    .info-card img { height: 200px; }
+    .order-bar { width: 96%; padding: 10px 12px; }
+    .order-bar-content { flex-direction: column; align-items: stretch; gap: 8px; }
+    .whatsapp-btn { justify-content: center; width: 100%; }
+    .order-items-preview { max-width: 100%; }
     
-    .order-bar {
-        width: 96%;
-        padding: 10px 12px;
-    }
-    .order-bar-content {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    .whatsapp-btn {
-        justify-content: center;
-        width: 100%;
-    }
-    .order-items-preview {
-        max-width: 100%;
-    }
+    .contact-container { grid-template-columns: 1fr; }
+    .review-form-top-row { flex-direction: column; align-items: stretch; gap: 15px; }
+    .review-stars-group { align-items: flex-start; }
+    .reviews-section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }

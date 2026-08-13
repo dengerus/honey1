@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пасека — Натуральный мёд</title>
+    <title>О пасеке — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,26 +33,10 @@
         </header>
 
         <main>
-            <h1 class="page-heading">Наша пасека</h1>
-            <div class="honey-grid">
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Пасека">
-                    <h3>Где стоит пасека</h3>
-                    <p>Наша пасека расположена в экологически чистом районе предгорья, вдали от шумных дорог и городов.</p>
-                    <div class="meta"><span>Чистая зона</span></div>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Сбор меда">
-                    <h3>Как собирается мёд</h3>
-                    <p>Пчелы свободно летают по лугам, собирая пыльцу и нектар с диких цветов и целебных трав.</p>
-                    <div class="meta"><span>100% натурально</span></div>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Откачка">
-                    <h3>Как его качают</h3>
-                    <p>Мы бережно откачиваем мёд на современной медогонке, полностью сохраняя все витамины и полезные свойства.</p>
-                    <div class="meta"><span>Традиционный метод</span></div>
-                </article>
+            <h1 class="page-heading">О нашей пасеке</h1>
+            <div class="info-card" style="margin-bottom: 40px;">
+                <h3 style="font-size: 24px; margin-bottom: 15px;">Традиции алтайского пчеловодства</h3>
+                <p style="font-size: 16px; line-height: 1.8;">Наша семейная пасека располагается в экологически чистых предгорьях Алтая вдалеке от дорог и городов. Мы занимаемся пчеловодством уже в третьем поколении, сохраняя аутентичные традиции получения чистого, зрелого мёда без каких-либо добавок.</p>
             </div>
         </main>
 
@@ -61,47 +45,12 @@
         </footer>
     </div>
 
-    <div id="favorites-popup" class="cart-popup hidden">
+    <div id="cart-popup" class="cart-popup">
         <div class="cart-popup-header">
-            <h3>🔖 Ваши сохраненные заказы</h3>
-            <button id="close-favorites-popup" class="close-popup-btn">&times;</button>
-        </div>
-        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
-            <input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input">
-            <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
-        </div>
-        <div id="favorites-popup-items" class="cart-popup-items"></div>
-    </div>
-
-    <div id="cart-popup" class="cart-popup hidden">
-        <div class="cart-popup-header">
-            <h3>Состав вашего заказа</h3>
-            <button id="close-cart-popup" class="close-popup-btn">&times;</button>
+            <h3>Сохраненные заказы (Избранное)</h3>
+            <button id="close-popup-btn" class="close-popup-btn">&times;</button>
         </div>
         <div id="cart-popup-items" class="cart-popup-items"></div>
-    </div>
-
-    <div id="order-bar" class="order-bar hidden">
-        <div class="order-bar-content">
-            <div id="order-bar-toggle" class="order-info">
-                <div class="order-title-row">
-                    <span class="order-heading">
-                        ЗАКАЗ <span class="order-edit-hint">(изменить)</span>
-                    </span>
-                    <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
-                </div>
-                <div id="bar-items-text" class="order-items-preview">пусто</div>
-            </div>
-            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
-                <span class="wa-text">в Ватсап</span>
-                <span class="wa-icon">➔</span>
-            </button>
-        </div>
-    </div>
-
-    <div id="lightbox" class="lightbox-modal">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img" alt="Увеличенное фото">
     </div>
 
     <script src="cart.js"></script>
