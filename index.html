@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Натуральный мёд с пасеки</title>
+    <title>Натуральный мёд — Главная</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,49 +33,47 @@
         </header>
 
         <main>
-            <h1 class="page-heading">Наш алтайский мёд</h1>
+            <h1 class="page-heading">Наш натуральный мёд</h1>
             <div class="honey-grid">
-                <div class="info-card" data-id="1" data-name="Алтайский цветочный мёд" data-price="3500">
-                    <img src="honey1.jpg" alt="Цветочный мед">
-                    <h3>Цветочный мёд</h3>
-                    <p>Собран с диких лугов в экологически чистых предгорьях Алтая. Обладает насыщенным ароматом и целебными свойствами.</p>
+                <article class="info-card" data-id="1" data-name="Липовый мёд" data-price="1200">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Липовый мед">
+                    <h3>Липовый мёд</h3>
+                    <p>Ароматный, светлый мёд высшего качества. Обладает целебными свойствами и мягким вкусом.</p>
                     <div class="meta">
-                        <span>3500 тг / кг</span>
+                        <span>1200 ₽ / 1л</span>
                         <div class="counter-box">
                             <button class="cnt-btn minus">-</button>
                             <span class="cnt-value">0</span>
                             <button class="cnt-btn plus">+</button>
                         </div>
                     </div>
-                </div>
-
-                <div class="info-card" data-id="2" data-name="Гречишный мёд" data-price="4000">
-                    <img src="honey2.jpg" alt="Гречишный мед">
+                </article>
+                <article class="info-card" data-id="2" data-name="Гречишный мёд" data-price="1400">
+                    <img src="https://images.unsplash.com/photo-1471943311424-646960669fbc?w=600&auto=format&fit=crop&q=80" alt="Гречишный мед">
                     <h3>Гречишный мёд</h3>
-                    <p>Тёмный мёд с ярким пряным вкусом и высоким содержанием железа. Отлично укрепляет иммунитет.</p>
+                    <p>Насыщенный темный мёд с ярким терпким вкусом. Содержит много полезных микроэлементов.</p>
                     <div class="meta">
-                        <span>4000 тг / кг</span>
+                        <span>1400 ₽ / 1л</span>
                         <div class="counter-box">
                             <button class="cnt-btn minus">-</button>
                             <span class="cnt-value">0</span>
                             <button class="cnt-btn plus">+</button>
                         </div>
                     </div>
-                </div>
-
-                <div class="info-card" data-id="3" data-name="Горный мёд" data-price="4500">
-                    <img src="honey3.jpg" alt="Горный мед">
-                    <h3>Горный мёд</h3>
-                    <p>Элитный сорт мёда с высокогорных пасек. Вбирает в себя нектар редких лекарственных растений.</p>
+                </article>
+                <article class="info-card" data-id="3" data-name="Луговое разнотравье" data-price="1000">
+                    <img src="https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=600&auto=format&fit=crop&q=80" alt="Цветочный мед">
+                    <h3>Луговое разнотравье</h3>
+                    <p>Сбор с диких луговых трав. Настоящий вкус лета, солнца и цветущих полей.</p>
                     <div class="meta">
-                        <span>4500 тг / кг</span>
+                        <span>1000 ₽ / 1л</span>
                         <div class="counter-box">
                             <button class="cnt-btn minus">-</button>
                             <span class="cnt-value">0</span>
                             <button class="cnt-btn plus">+</button>
                         </div>
                     </div>
-                </div>
+                </article>
             </div>
         </main>
 
@@ -84,27 +82,47 @@
         </footer>
     </div>
 
+    <div id="favorites-popup" class="cart-popup hidden">
+        <div class="cart-popup-header">
+            <h3>🔖 Ваши сохраненные заказы</h3>
+            <button id="close-favorites-popup" class="close-popup-btn">&times;</button>
+        </div>
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+            <input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input">
+            <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
+        </div>
+        <div id="favorites-popup-items" class="cart-popup-items"></div>
+    </div>
+
+    <div id="cart-popup" class="cart-popup hidden">
+        <div class="cart-popup-header">
+            <h3>Состав вашего заказа</h3>
+            <button id="close-cart-popup" class="close-popup-btn">&times;</button>
+        </div>
+        <div id="cart-popup-items" class="cart-popup-items"></div>
+    </div>
+
     <div id="order-bar" class="order-bar hidden">
         <div class="order-bar-content">
-            <div class="order-info" id="order-bar-toggle">
+            <div id="order-bar-toggle" class="order-info">
                 <div class="order-title-row">
-                    <span class="order-heading">🛒 Ваш заказ</span>
+                    <span class="order-heading">
+                        ЗАКАЗ <span class="order-edit-hint">(изменить)</span>
+                    </span>
+                    <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
                 </div>
-                <div class="order-items-preview" id="order-items-preview"></div>
-                <div class="order-total">Итого: <strong id="order-total-price">0 тг</strong></div>
+                <div id="bar-items-text" class="order-items-preview">пусто</div>
             </div>
-            <button id="whatsapp-btn" class="whatsapp-btn">
-                <span class="wa-icon">W</span> Сделать заказ в WhatsApp
+            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
+                <span class="wa-text">в Ватсап</span>
+                <span class="wa-icon">➔</span>
             </button>
         </div>
     </div>
 
-    <div id="cart-popup" class="cart-popup">
-        <div class="cart-popup-header">
-            <h3>Сохраненные заказы (Избранное)</h3>
-            <button id="close-popup-btn" class="close-popup-btn">&times;</button>
-        </div>
-        <div id="cart-popup-items" class="cart-popup-items"></div>
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Увеличенное фото">
     </div>
 
     <script src="cart.js"></script>

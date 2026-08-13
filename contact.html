@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Натуральный мёд — Контакты и отзывы</title>
+    <title>Контакты и отзывы — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,11 +16,10 @@
                 </div>
                 <div class="header-right-action">
                     <div class="fav-btn-wrapper">
-                        <button class="fav-icon-btn" id="favorites-toggle-btn" title="Избранные заказы">
-                            🔖
-                            <span id="fav-badge" class="fav-badge hidden">0</span>
+                        <button id="favorites-toggle-btn" class="fav-icon-btn" title="Избранные заказы">
+                            🔖 <span id="fav-badge" class="fav-badge hidden">0</span>
                         </button>
-                        <span class="fav-label-sub">заказы</span>
+                        <span class="fav-label-sub">избранное</span>
                     </div>
                 </div>
             </div>
@@ -34,121 +33,63 @@
         </header>
 
         <main>
-            <h1 class="page-heading">Связь с нами и отзывы</h1>
+            <h1 class="page-heading">Контакты</h1>
             <div class="contacts-grid">
                 <div class="contact-info-card">
-                    <h2>Контакты пасеки</h2>
-                    <p>Мы всегда рады ответить на ваши вопросы о продукции, условиях доставки и оптовых заказах.</p>
+                    <h2>Свяжитесь с нами</h2>
+                    <p>Мы всегда рады ответить на любые вопросы о нашем мёде, условиях доставки и сборе урожая.</p>
                     <ul class="contact-details-list">
-                        <li>📍 <strong>Адрес:</strong> Республика Алтай, Чемальский район</li>
+                        <li>📍 <strong>Адрес пасеки:</strong> Предгорье Алтая, экологически чистый район</li>
                         <li>📞 <strong>Телефон / WhatsApp:</strong> <a href="https://wa.me/77074242531" target="_blank">+7 (707) 424-25-31</a></li>
-                        <li>📧 <strong>Email:</strong> honey-altai@mail.ru</li>
-                        <li>⏰ <strong>Режим работы:</strong> Пн-Вс с 9:00 до 20:00</li>
+                        <li>⏰ <strong>Режим работы:</strong> Пн–Вс: с 9:00 до 20:00</li>
                     </ul>
-                </div>
-
-                <!-- Блок отзывов с аккуратной и выровненной кнопкой отправки -->
-                <div class="reviews-section">
-                    <h2>Отзывы покупателей</h2>
-                    <div class="reviews-list" id="reviews-container">
-                        <div class="review-item">
-                            <div class="review-author">Алексей С.</div>
-                            <div class="review-text">Заказывал горный мёд. Доставка быстрая, вкус просто потрясающий, настоящий аромат лугов!</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-author">Марина Е.</div>
-                            <div class="review-text">Беру липовый мёд не первый раз для детей. Очень качественный продукт, спасибо пасечнику!</div>
-                        </div>
-                    </div>
-
-                    <h2>Оставить отзыв</h2>
-                    <form class="review-form" id="review-form">
-                        <input type="text" id="review-name" placeholder="Ваше имя" required>
-                        <textarea id="review-text" placeholder="Ваш отзыв..." required></textarea>
-                        <button type="submit" class="submit-review-btn">Отправить отзыв</button>
-                    </form>
                 </div>
             </div>
         </main>
 
         <footer>
-            <p>&copy; 2026 Натуральный мёд. Все права защищены.</p>
+            <p>&copy; 2026 Экспериментальный сайт о мёде. Все права защищены.</p>
         </footer>
     </div>
 
-    <!-- Панель заказа -->
+    <div id="favorites-popup" class="cart-popup hidden">
+        <div class="cart-popup-header">
+            <h3>🔖 Ваши сохраненные заказы</h3>
+            <button id="close-favorites-popup" class="close-popup-btn">&times;</button>
+        </div>
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+            <input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input">
+            <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
+        </div>
+        <div id="favorites-popup-items" class="cart-popup-items"></div>
+    </div>
+
+    <div id="cart-popup" class="cart-popup hidden">
+        <div class="cart-popup-header">
+            <h3>Состав вашего заказа</h3>
+            <button id="close-cart-popup" class="close-popup-btn">&times;</button>
+        </div>
+        <div id="cart-popup-items" class="cart-popup-items"></div>
+    </div>
+
     <div id="order-bar" class="order-bar hidden">
         <div class="order-bar-content">
-            <div class="order-info" id="order-bar-toggle">
+            <div id="order-bar-toggle" class="order-info">
                 <div class="order-title-row">
-                    <span class="order-heading">🛒 Ваша корзина <span class="order-edit-hint">(нажмите для изменения)</span></span>
+                    <span class="order-heading">
+                        ЗАКАЗ <span class="order-edit-hint">(изменить)</span>
+                    </span>
+                    <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
                 </div>
-                <div class="order-items-preview" id="bar-items-text">Товары не выбраны</div>
+                <div id="bar-items-text" class="order-items-preview">пусто</div>
             </div>
-            <div class="order-total">
-                Итого: <strong id="bar-total-price">0 ₽</strong>
-            </div>
-            <button class="whatsapp-btn" id="whatsapp-send-btn">
-                <span class="wa-icon">✓</span> Заказать в WhatsApp
+            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап">
+                <span class="wa-text">в Ватсап</span>
+                <span class="wa-icon">➔</span>
             </button>
         </div>
     </div>
 
-    <!-- Попап корзины -->
-    <div id="cart-popup" class="cart-popup">
-        <div class="cart-popup-header">
-            <h3>Состав заказа</h3>
-            <button class="close-popup-btn" id="close-cart-popup">&times;</button>
-        </div>
-        <div class="cart-popup-items" id="cart-popup-items"></div>
-    </div>
-
-    <!-- Попап избранного -->
-    <div id="favorites-popup" class="favorites-popup">
-        <div class="favorites-popup-header">
-            <h3>Избранные заказы</h3>
-            <button class="close-popup-btn" id="close-favorites-popup">&times;</button>
-        </div>
-        <div class="favorites-popup-items" id="favorites-popup-items"></div>
-        <div class="favorites-save-box">
-            <input type="text" id="fav-name-input" class="fav-input" placeholder="Название для набора">
-            <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
-        </div>
-    </div>
-
     <script src="cart.js"></script>
-    <script>
-        // Небольшой скрипт для добавления отзывов прямо на странице контактов
-        document.addEventListener('DOMContentLoaded', () => {
-            const reviewForm = document.getElementById('review-form');
-            const reviewsContainer = document.getElementById('reviews-container');
-
-            if (reviewForm) {
-                reviewForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const nameInput = document.getElementById('review-name');
-                    const textInput = document.getElementById('review-text');
-
-                    if (nameInput.value.trim() && textInput.value.trim()) {
-                        const newReview = document.createElement('div');
-                        newReview.className = 'review-item';
-                        newReview.innerHTML = `
-                            <div class="review-author">${escapeHtml(nameInput.value)}</div>
-                            <div class="review-text">${escapeHtml(textInput.value)}</div>
-                        `;
-                        reviewsContainer.appendChild(newReview);
-                        nameInput.value = '';
-                        textInput.value = '';
-                        alert('Спасибо за ваш отзыв! Он успешно опубликован.');
-                    }
-                });
-            }
-
-            function escapeHtml(text) {
-                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-                return text.replace(/[&<>"']/g, m => map[m]);
-            }
-        });
-    </script>
 </body>
 </html>

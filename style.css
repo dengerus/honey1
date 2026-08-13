@@ -34,13 +34,13 @@ body::before, body::after {
     z-index: -1;
     background-color: #fef9c3;
     background-image: radial-gradient(circle farthest-side at 10% 90%, #fffbeb, transparent),
-                      radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
-                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
-                      linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
+                        radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
+                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
+                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
     background-size: 30px 52px;
     background-position: 0 0, 0 0, 0 0, 0 0, 15px 26px, 15px 26px, 0 0, 15px 26px;
     opacity: 0.7;
@@ -322,6 +322,56 @@ nav a.active::after {
     text-align: center;
 }
 
+.contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.contact-info-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: var(--card-radius);
+    border: 1px solid #fef08a;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+.contact-info-card h2 {
+    color: #713f12;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.contact-info-card p {
+    color: #57534e;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.contact-details-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-details-list li {
+    font-size: 15px;
+    color: #451a03;
+}
+
+.contact-details-list a {
+    color: #ca8a04;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.contact-details-list a:hover {
+    text-decoration: underline;
+}
+
 .cart-popup {
     position: fixed;
     bottom: 95px;
@@ -380,6 +430,32 @@ nav a.active::after {
     max-height: 250px;
     overflow-y: auto;
     padding-right: 5px;
+}
+
+.fav-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ca8a04;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    background: #fffbeb;
+}
+
+.fav-save-btn {
+    background: #ca8a04;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.fav-save-btn:hover {
+    background: #a16207;
 }
 
 .fav-item-row, .popup-item-row {
@@ -499,6 +575,14 @@ nav a.active::after {
     gap: 6px;
 }
 
+.order-edit-hint {
+    font-size: 12px;
+    font-weight: 600;
+    color: #78716c;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
 .order-total {
     font-size: 15px;
     color: #57534e;
@@ -553,6 +637,42 @@ nav a.active::after {
     font-size: 15px;
 }
 
+.lightbox-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.lightbox-modal.active {
+    display: flex;
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 12px;
+    border: 2px solid #fef08a;
+    object-fit: contain;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: #ffffff;
+    font-size: 40px;
+    cursor: pointer;
+}
+
 footer {
     text-align: center;
     padding: 30px;
@@ -566,12 +686,32 @@ footer {
     body::before, body::after { width: 10px; }
     .main-wrapper { margin: 0; padding: 10px; }
     header { padding: 15px; margin-bottom: 20px; }
-    .honey-grid { grid-template-columns: 1fr; gap: 20px; }
-    .site-title { font-size: 20px; }
-    .header-emoji { font-size: 26px; }
+    .honey-grid, .contacts-grid { grid-template-columns: 1fr; gap: 20px; }
+    
+    .site-title { 
+        font-size: 20px; 
+    }
+    .header-emoji {
+        font-size: 26px;
+    }
+    
     nav a { font-size: 12px; padding: 10px 6px; }
-    .order-bar { width: 96%; padding: 10px 12px; }
-    .order-bar-content { flex-direction: column; align-items: stretch; gap: 8px; }
-    .whatsapp-btn { justify-content: center; width: 100%; }
-    .order-items-preview { max-width: 100%; }
+    .info-card img { height: 200px; }
+    
+    .order-bar {
+        width: 96%;
+        padding: 10px 12px;
+    }
+    .order-bar-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .whatsapp-btn {
+        justify-content: center;
+        width: 100%;
+    }
+    .order-items-preview {
+        max-width: 100%;
+    }
 }
