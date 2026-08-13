@@ -10,7 +10,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         @media (max-width: 768px) {
             .contact-container { grid-template-columns: 1fr; }
@@ -44,10 +44,9 @@
         }
         .wa-link:hover { background: #20ba5a; transform: scale(1.05); }
         
-        /* Стили для Яндекс.Карты и кнопки навигатора */
+        /* Стили для аккуратной компактной Яндекс.Карты */
         .map-section {
             width: 100%;
-            min-height: 450px;
             border-radius: var(--card-radius);
             overflow: hidden;
             border: 2px solid #fef08a;
@@ -56,17 +55,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
+            margin-bottom: 30px;
+            padding: 15px;
         }
-        .map-section > div {
-            width: 100% !important;
-            height: 450px !important;
+        .map-wrapper-inner {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
         }
         .navigator-btn-box {
-            padding: 20px;
-            background: #ffffff;
+            padding-top: 15px;
+            background: transparent;
             text-align: center;
-            border-top: 1px solid #fef08a;
             width: 100%;
         }
         .nav-btn {
@@ -135,21 +137,24 @@
                         <strong class="dark-large">+7 (777) 000-00-00</strong>
                     </div>
                 </div>
-                <div class="contact-card">
-                    <h2>Наши отзывы</h2>
-                    <p style="color: #57534e; font-size: 16px; line-height: 1.6;">Нам важно ваше мнение! Закажите алтайский мёд прямо с пасеки и поделитесь своими впечатлениями или оставьте отзыв через WhatsApp.</p>
+
+                <!-- Блок с Яндекс.Картой и кнопкой навигатора (теперь слева/сверху от отзывов на ПК) -->
+                <div class="map-section">
+                    <div class="map-wrapper-inner">
+                        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A7a4f88db0485bc5de87b36b58801da5b4fd9fc494ad8d5574a7ae2726103ac67&amp;width=320&amp;height=240&amp;lang=ru_RU&amp;scroll=true"></script>
+                    </div>
+                    <div class="navigator-btn-box">
+                        <a href="https://yandex.ru/maps/?rtext=~51.900000,85.340000&rtt=auto" target="_blank" class="nav-btn">
+                            🚗 Открыть маршрут в Яндекс.Навигаторе
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Блок с Яндекс.Картой и кнопкой навигатора -->
-            <div class="map-section">
-                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A3e097c058b4e02440ff41901c5686ff0c4023d6151495fdea1a5c11eb5302d52&amp;width=500&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
-                
-                <div class="navigator-btn-box">
-                    <a href="https://yandex.ru/maps/?rtext=~51.900000,85.340000&rtt=auto" target="_blank" class="nav-btn">
-                        🚗 Открыть маршрут в Яндекс.Навигаторе
-                    </a>
-                </div>
+            <!-- Блок «Наши отзывы» спустился вниз на всю ширину -->
+            <div class="contact-card" style="margin-bottom: 40px;">
+                <h2>Наши отзывы</h2>
+                <p style="color: #57534e; font-size: 16px; line-height: 1.6;">Нам важно ваше мнение! Закажите алтайский мёд прямо с пасеки и поделитесь своими впечатлениями или оставьте отзыв через WhatsApp.</p>
             </div>
         </main>
 
