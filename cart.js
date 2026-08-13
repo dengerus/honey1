@@ -229,17 +229,19 @@ document.addEventListener('DOMContentLoaded', () => {
             let actionsHTML = '';
             const isMyReview = myReviewTokens.includes(rev.token);
 
-            // Если включен режим админа, добавляем кнопку админского удаления
+            // Если включен режим админа, выводим кнопку удаления внизу карточки
             if (isAdmin) {
-                actionsHTML += `<button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626; color:white; border:none; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; position:absolute; top:15px; right:15px;">Удалить (Админ)</button>`;
-            } 
-            
-            // Если это отзыв текущего пользователя, добавляем кнопки Изменить и Удалить
-            if (isMyReview) {
                 actionsHTML += `
-                    <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 5px;">
-                        <button class="review-edit-btn" data-id="${rev.id}" style="background:#2563eb; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Изменить</button>
-                        <button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Удалить</button>
+                    <div style="margin-top: 12px; display: flex; justify-content: flex-end; border-top: 1px dashed #fde047; padding-top: 8px;">
+                        <button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Удалить (Админ)</button>
+                    </div>
+                `;
+            } else if (isMyReview) {
+                // Если это ваш отзыв, выводим кнопки Изменить и Удалить аккуратно внизу
+                actionsHTML += `
+                    <div style="margin-top: 12px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px dashed #fde047; padding-top: 8px;">
+                        <button class="review-edit-btn" data-id="${rev.id}" style="background:#2563eb; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Изменить</button>
+                        <button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Удалить</button>
                     </div>
                 `;
             }
@@ -305,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Скрытый вход в админку: Имя "ADMIN", пароль в тексте "SECRET123"
             if (nameVal.toUpperCase() === 'ADMIN' && textVal === 'SECRET123') {
                 sessionStorage.setItem('honey_admin_logged', 'true');
-                alert('Режим администратора успешно активирован! Теперь вам доступны кнопки удаления любых отзывов.');
+                alert('Режим администратора успешно активирован!');
                 reviewForm.reset();
                 renderReviews();
                 return;
