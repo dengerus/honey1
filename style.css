@@ -61,7 +61,7 @@ header {
     background-color: var(--header-bg);
     border: 2px solid #ca8a04;
     border-radius: var(--card-radius);
-    padding: 20px 40px;
+    padding: 20px 30px;
     margin-bottom: 40px;
     display: flex;
     flex-direction: column;
@@ -73,24 +73,21 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
-}
-
-.header-left-space, .header-right-action {
-    width: 60px;
-    display: flex;
-    justify-content: flex-end;
+    gap: 10px;
 }
 
 .header-center-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
 }
 
 .header-emoji {
     font-size: 32px;
     line-height: 1;
+    flex-shrink: 0;
 }
 
 .site-title {
@@ -100,26 +97,34 @@ header {
     text-decoration: none;
     text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
     letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-right-action {
+    display: flex;
+    flex-shrink: 0;
 }
 
 .fav-btn-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
 }
 
 .fav-icon-btn {
     background: #ffffff;
     border: 2px solid #ca8a04;
     border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 17px;
     position: relative;
     transition: var(--transition);
     box-shadow: 0 4px 10px rgba(202, 138, 4, 0.15);
@@ -131,11 +136,11 @@ header {
 }
 
 .fav-label-sub {
-    font-size: 10px;
-    font-weight: 700;
-    color: #000000;
+    font-size: 11px;
+    font-weight: 800;
+    color: #1c1917;
     text-transform: lowercase;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
     line-height: 1;
 }
 
@@ -565,25 +570,17 @@ nav a.active::after {
     color: #713f12;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 2px solid #ca8a04;
-    padding-bottom: 1px;
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
 .order-edit-hint {
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
     color: #78716c;
     text-transform: none;
     letter-spacing: normal;
-}
-
-.toggle-arrow {
-    font-size: 12px;
-    color: #ca8a04;
-    transition: transform 0.3s ease;
 }
 
 .order-total {
@@ -690,7 +687,14 @@ footer {
     .main-wrapper { margin: 0; padding: 10px; }
     header { padding: 15px; margin-bottom: 20px; }
     .honey-grid, .contacts-grid { grid-template-columns: 1fr; gap: 20px; }
-    .site-title { font-size: 22px; }
+    
+    .site-title { 
+        font-size: 20px; 
+    }
+    .header-emoji {
+        font-size: 26px;
+    }
+    
     nav a { font-size: 12px; padding: 10px 6px; }
     .info-card img { height: 200px; }
     
