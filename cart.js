@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartPopupItems = document.getElementById('cart-popup-items');
     const orderBarToggle = document.getElementById('order-bar-toggle');
 
-    let cart = {}; // Ключ - ID товара, значение - количество (кг)
+    let cart = {}; 
     let favorites = JSON.parse(localStorage.getItem('honey_favorites')) || [];
 
     function updateOrderBar() {
@@ -193,16 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewsStats = document.getElementById('reviews-stats');
     const reviewError = document.getElementById('review-error');
 
-    // Базовый список отзывов по умолчанию, если localStorage пуст
-    let defaultReviews = [
-        { id: 1, name: 'Алексей Смирнов', rating: 5, text: 'Потрясающий горный мёд! Очень ароматный, густой. Доставили быстро в Алматы. Спасибо пасеке за качество!', date: '10.05.2026' },
-        { id: 2, name: 'Елена Васильева', rating: 5, text: 'Берем гречишный мёд уже во второй раз. Вся семья в восторге, чувствуется натуральность и богатый вкус.', date: '18.05.2026' }
-    ];
+    // Начинаем с абсолютно пустого массива (без фейковых отзывов)
+    let reviews = JSON.parse(localStorage.getItem('honey_reviews')) || [];
+    
+    // Получаем список собственных ID отзывов текущего пользователя
+    let myReviewTokens = JSON.parse(localStorage.getItem('honey_my_tokens')) || [];
 
-    let reviews = JSON.parse(localStorage.getItem('honey_reviews')) || defaultReviews;
-
-    // Простая система фильтрации мата (клиентская безопасность)
-    const badWords = ['сука', 'блять', 'хуй', 'пизда', 'ебать', 'мрачь', 'дура', 'суки', 'дебил'];
+    // Фильтр мата и оскорблений
+    const badWords = ['сука', 'блять', 'хуй', 'пизда', 'ебать', 'дура', 'суки', 'дебил', 'отстойник', 'уроды', 'мрази'];
     function containsProfanity(text) {
         const lower = text.toLowerCase();
         return badWords.some(word => lower.includes(word));
@@ -213,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reviewsList.innerHTML = '';
 
         if (reviews.length === 0) {
-            reviewsList.innerHTML = '<div class="no-reviews">Пока отзывов нет. Будьте первыми!</div>';
+            reviewsList.innerHTML = '<div class="no-reviews">Пока нет отзывов. Будьте первыми!</div>';
             if (reviewsStats) reviewsStats.textContent = `★ 0.0 / 5 (0 отзывов)`;
             return;
         }
@@ -231,10 +229,18 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let starsStr = '★★★★★'.slice(0, rev.rating) + '☆☆☆☆☆'.slice(0, 5 - rev.rating);
             
-            // Кнопка удаления видна админу или автору (если имя совпадает, упрощенно)
-            let deleteBtnHTML = '';
+            let actionsHTML = '';
+            const isMyReview = myReviewTokens.includes(rev.token);
+
             if (isAdmin) {
-                deleteBtnHTML = `<button class="review-del-btn" data-id="${rev.id}">Удалить (Админ)</button>`;
+                actionsHTML += `<button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626;">Удалить (Админ)</button>`;
+            } else if (isMyReview) {
+                actionsHTML += `
+                    <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 5px;">
+                        <button class="review-edit-btn" data-id="${rev.id}" style="background:#2563eb; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Изменить</button>
+                        <button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Удалить</button>
+                    </div>
+                `;
             }
 
             card.innerHTML = `
@@ -243,19 +249,43 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="review-stars">${starsStr}</span>
                 </div>
                 <div class="review-text">${rev.text}</div>
-                <span class="review-date">${rev.date}</span>
-                ${deleteBtnHTML}
+                <span class="review-date">${rev.date} ${rev.edited ? '(изменено)' : ''}</span>
+                ${actionsHTML}
             `;
             reviewsList.appendChild(card);
         });
 
-        // Навешиваем удаление отзывов
+        // Событие удаления отзыва
         reviewsList.querySelectorAll('.review-del-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = Number(e.target.dataset.id);
                 reviews = reviews.filter(r => r.id !== id);
                 localStorage.setItem('honey_reviews', JSON.stringify(reviews));
                 renderReviews();
+            });
+        });
+
+        // Событие изменения (редактирования) своего отзыва
+        reviewsList.querySelectorAll('.review-edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = Number(e.target.dataset.id);
+                const targetRev = reviews.find(r => r.id === id);
+                if (!targetRev) return;
+
+                const newText = prompt('Измените текст вашего отзыва:', targetRev.text);
+                if (newText !== null) {
+                    const trimmed = newText.trim();
+                    if (containsProfanity(trimmed)) {
+                        alert('Ошибка! Текст содержит недопустимые слова или оскорбления.');
+                        return;
+                    }
+                    if (trimmed.length > 0) {
+                        targetRev.text = trimmed;
+                        targetRev.edited = true;
+                        localStorage.setItem('honey_reviews', JSON.stringify(reviews));
+                        renderReviews();
+                    }
+                }
             });
         });
     }
@@ -271,32 +301,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const textVal = textInput.value.trim();
             const ratingVal = parseInt(ratingSelect.value);
 
-            // Скрытая активация админки: если ввести имя "ADMIN" и пароль в текст "SECRET123"
+            // Скрытый вход в админку: Имя "ADMIN", текст пароля "SECRET123"
             if (nameVal.toUpperCase() === 'ADMIN' && textVal === 'SECRET123') {
                 sessionStorage.setItem('honey_admin_logged', 'true');
-                alert('Режим администратора активирован! Теперь вы можете удалять отзывы.');
+                alert('Режим администратора успешно активирован! Теперь вы можете удалять любые отзывы.');
                 reviewForm.reset();
                 renderReviews();
                 return;
             }
 
-            // Проверка на мат
+            // Проверка фильтра нецензурной лексики и оскорблений
             if (containsProfanity(nameVal) || containsProfanity(textVal)) {
-                if (reviewError) reviewError.style.display = 'block';
+                if (reviewError) {
+                    reviewError.textContent = 'Использование нецензурной лексики и оскорблений запрещено.';
+                    reviewError.style.display = 'block';
+                }
                 return;
             }
             if (reviewError) reviewError.style.display = 'none';
 
+            const uniqueToken = 'token_' + Math.random().toString(36).substring(2) + Date.now();
+
             const newReview = {
                 id: Date.now(),
+                token: uniqueToken,
                 name: nameVal,
                 rating: ratingVal,
                 text: textVal,
-                date: new Date().toLocaleDateString()
+                date: new Date().toLocaleDateString(),
+                edited: false
             };
 
             reviews.unshift(newReview);
+            myReviewTokens.push(uniqueToken);
+
             localStorage.setItem('honey_reviews', JSON.stringify(reviews));
+            localStorage.setItem('honey_my_tokens', JSON.stringify(myReviewTokens));
+
             reviewForm.reset();
             renderReviews();
         });
