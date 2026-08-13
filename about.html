@@ -16,9 +16,12 @@
                     <a href="index.html" class="site-title">Натуральный мёд</a>
                 </div>
                 <div class="header-right-action">
-                    <button id="favorites-toggle-btn" class="fav-icon-btn" title="Избранные заказы">
-                        🔖 <span id="fav-badge" class="fav-badge hidden">0</span>
-                    </button>
+                    <div class="fav-btn-wrapper">
+                        <button id="favorites-toggle-btn" class="fav-icon-btn" title="Избранные заказы">
+                            🔖 <span id="fav-badge" class="fav-badge hidden">0</span>
+                        </button>
+                        <span class="fav-label-sub">избранное</span>
+                    </div>
                 </div>
             </div>
             <nav>
@@ -64,12 +67,9 @@
             <h3>🔖 Ваши сохраненные заказы</h3>
             <button id="close-favorites-popup" class="close-popup-btn">&times;</button>
         </div>
-        <div style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
-            <div style="display: flex; gap: 8px;">
-                <input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input">
-                <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
-            </div>
-            <span class="fav-subtitle-label">избранное</span>
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+            <input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input">
+            <button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button>
         </div>
         <div id="favorites-popup-items" class="cart-popup-items"></div>
     </div>
@@ -87,7 +87,7 @@
             <div id="order-bar-toggle" class="order-info">
                 <div class="order-title-row">
                     <span class="order-heading">
-                        заказ <span class="order-edit-hint">(изменить)</span> <span class="toggle-arrow">▲</span>
+                        ЗАКАЗ <span class="toggle-arrow">▲</span> <span class="order-edit-hint">(изменить)</span>
                     </span>
                     <span class="order-total">Итого: <strong id="bar-total-price">0 ₽</strong></span>
                 </div>
