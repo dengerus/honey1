@@ -193,10 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewsStats = document.getElementById('reviews-stats');
     const reviewError = document.getElementById('review-error');
 
-    // Начинаем с абсолютно пустого массива (без фейковых отзывов)
     let reviews = JSON.parse(localStorage.getItem('honey_reviews')) || [];
-    
-    // Получаем список собственных ID отзывов текущего пользователя
     let myReviewTokens = JSON.parse(localStorage.getItem('honey_my_tokens')) || [];
 
     // Фильтр мата и оскорблений
@@ -232,9 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let actionsHTML = '';
             const isMyReview = myReviewTokens.includes(rev.token);
 
+            // Если включен режим админа, добавляем кнопку админского удаления
             if (isAdmin) {
-                actionsHTML += `<button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626;">Удалить (Админ)</button>`;
-            } else if (isMyReview) {
+                actionsHTML += `<button class="review-del-btn" data-id="${rev.id}" style="background:#dc2626; color:white; border:none; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; position:absolute; top:15px; right:15px;">Удалить (Админ)</button>`;
+            } 
+            
+            // Если это отзыв текущего пользователя, добавляем кнопки Изменить и Удалить
+            if (isMyReview) {
                 actionsHTML += `
                     <div style="position: absolute; top: 15px; right: 15px; display: flex; gap: 5px;">
                         <button class="review-edit-btn" data-id="${rev.id}" style="background:#2563eb; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Изменить</button>
@@ -265,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Событие изменения (редактирования) своего отзыва
+        // Событие изменения своего отзыва
         reviewsList.querySelectorAll('.review-edit-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = Number(e.target.dataset.id);
@@ -301,16 +302,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const textVal = textInput.value.trim();
             const ratingVal = parseInt(ratingSelect.value);
 
-            // Скрытый вход в админку: Имя "ADMIN", текст пароля "SECRET123"
+            // Скрытый вход в админку: Имя "ADMIN", пароль в тексте "SECRET123"
             if (nameVal.toUpperCase() === 'ADMIN' && textVal === 'SECRET123') {
                 sessionStorage.setItem('honey_admin_logged', 'true');
-                alert('Режим администратора успешно активирован! Теперь вы можете удалять любые отзывы.');
+                alert('Режим администратора успешно активирован! Теперь вам доступны кнопки удаления любых отзывов.');
                 reviewForm.reset();
                 renderReviews();
                 return;
             }
 
-            // Проверка фильтра нецензурной лексики и оскорблений
+            // Проверка на мат и оскорбления
             if (containsProfanity(nameVal) || containsProfanity(textVal)) {
                 if (reviewError) {
                     reviewError.textContent = 'Использование нецензурной лексики и оскорблений запрещено.';
