@@ -6,7 +6,6 @@
     <title>Контакты и отзывы — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Стили для обновленной страницы контактов */
         .contacts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -102,7 +101,6 @@
             transform: scale(1.05);
         }
 
-        /* Стили для карты */
         .map-card {
             background: #ffffff;
             padding: 20px;
@@ -166,7 +164,6 @@
             box-shadow: 0 6px 16px rgba(0, 170, 85, 0.3);
         }
 
-        /* Стили для блока отзывов */
         .reviews-section {
             background: #ffffff;
             padding: 30px;
@@ -427,7 +424,6 @@
             <h1 class="page-heading">Контакты и местоположение</h1>
             
             <div class="contacts-grid">
-                <!-- Левый блок: Адрес и Контакты -->
                 <div class="contact-info-card">
                     <div class="contact-section">
                         <h2>Адрес</h2>
@@ -459,7 +455,6 @@
                     </div>
                 </div>
 
-                <!-- Правый блок: Карта и Навигаторы -->
                 <div class="map-card">
                     <h2>Как проехать</h2>
                     <div class="map-container">
@@ -476,7 +471,6 @@
                 </div>
             </div>
 
-            <!-- Блок отзывов покупателей снизу под картой -->
             <div class="reviews-section">
                 <div class="reviews-header-row">
                     <h2>Отзывы покупателей</h2>
@@ -487,7 +481,6 @@
                     </div>
                 </div>
 
-                <!-- Форма добавления отзыва -->
                 <form class="review-form" id="reviewForm">
                     <input type="hidden" id="editIndex" value="-1">
                     <div class="rating-select-group">
@@ -506,7 +499,6 @@
                     <button type="submit" class="submit-review-btn" id="submitBtn">Оставить отзыв</button>
                 </form>
 
-                <!-- Список отзывов -->
                 <div class="reviews-list" id="reviewsList">
                     <div class="no-reviews-msg">Отзывов пока нет. Будьте первыми!</div>
                 </div>
@@ -518,7 +510,6 @@
         </footer>
     </div>
 
-    <!-- Попапы и корзина -->
     <div id="favorites-popup" class="cart-popup hidden">
         <div class="cart-popup-header">
             <h3>🔖 Ваши сохраненные заказы</h3>
@@ -584,14 +575,16 @@
             });
         });
 
+        // Жесткая очистка мусора и старых фантомных отзывов при первом запуске
+        if (!localStorage.getItem('honey_reviews_cleaned_v2')) {
+            localStorage.removeItem('honey_reviews');
+            localStorage.setItem('honey_reviews_cleaned_v2', 'true');
+        }
+
         function getReviews() {
             let reviews = JSON.parse(localStorage.getItem('honey_reviews'));
-            // Если в localStorage лежат те самые старые/несуществующие отзывы или пусто — очищаем по умолчанию
-            if (!reviews || (reviews.length === 2 && reviews[0].text && reviews[0].text.includes('тест'))) {
-                localStorage.removeItem('honey_reviews');
-                return [];
-            }
-            return reviews || [];
+            if (!reviews || !Array.isArray(reviews)) return [];
+            return reviews;
         }
 
         function saveReviews(reviews) {
@@ -637,6 +630,7 @@
 
                 const starsHtml = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
                 
+                // Кнопки Изменить/Удалить видны автору отзыва или админу
                 const isAuthor = rev.sessionId === currentSessionId;
                 let actionsHtml = '';
 
@@ -697,6 +691,7 @@
 
             if (!authorInput || !textInput) return;
 
+            // Вход в режим администратора через скрытые поля
             if (authorInput === ADMIN_LOGIN && textInput === ADMIN_PASS) {
                 localStorage.setItem('is_honey_admin', 'true');
                 alert('Режим администратора активирован!');
