@@ -365,18 +365,29 @@
             border: none;
             cursor: pointer;
             font-size: 12px;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
+        }
+
+        .edit-btn {
+            color: #ca8a04;
+            background: #fef9c3;
+            border: 1px solid #fef08a;
+        }
+
+        .edit-btn:hover {
+            background: #fde047;
         }
 
         .delete-btn {
             color: #ef4444;
             background: #fee2e2;
+            border: 1px solid #fecaca;
         }
 
         .delete-btn:hover {
-            background: #fecaca;
+            background: #fca5a5;
         }
 
         @media (max-width: 768px) {
@@ -476,8 +487,9 @@
                     </div>
                 </div>
 
-                <!-- Форма добавления отзыва (обычная визуально, но скрытый вход для знающих через поля) -->
+                <!-- Форма добавления отзыва -->
                 <form class="review-form" id="reviewForm">
+                    <input type="hidden" id="editIndex" value="-1">
                     <div class="rating-select-group">
                         <span class="rating-label">Ваша оценка:</span>
                         <div class="rating-stars" id="starContainer">
@@ -491,7 +503,7 @@
                     </div>
                     <input type="text" id="reviewAuthor" class="review-input" placeholder="Имя" required>
                     <textarea id="reviewText" class="review-textarea" placeholder="Ваш отзыв" required></textarea>
-                    <button type="submit" class="submit-review-btn">Оставить отзыв</button>
+                    <button type="submit" class="submit-review-btn" id="submitBtn">Оставить отзыв</button>
                 </form>
 
                 <!-- Список отзывов -->
@@ -506,7 +518,7 @@
         </footer>
     </div>
 
-    <!-- Попапы и корзина (сохранены из оригинальной верстки) -->
+    <!-- Попапы и корзина -->
     <div id="favorites-popup" class="cart-popup hidden">
         <div class="cart-popup-header">
             <h3>🔖 Ваши сохраненные заказы</h3>
@@ -547,7 +559,6 @@
 
     <script src="cart.js"></script>
     <script>
-        // Секретные данные админа (внешне поля выглядят обычно: "Имя" и "Ваш отзыв")
         const ADMIN_LOGIN = "Admin";
         const ADMIN_PASS = "honey123";
 
@@ -574,11 +585,26 @@
         });
 
         function getReviews() {
-            return JSON.parse(localStorage.getItem('honey_reviews')) || [];
+            let reviews = JSON.parse(localStorage.getItem('honey_reviews'));
+            // Если в localStorage лежат те самые старые/несуществующие отзывы или пусто — очищаем по умолчанию
+            if (!reviews || (reviews.length === 2 && reviews[0].text && reviews[0].text.includes('тест'))) {
+                localStorage.removeItem('honey_reviews');
+                return [];
+            }
+            return reviews || [];
         }
 
         function saveReviews(reviews) {
             localStorage.setItem('honey_reviews', JSON.stringify(reviews));
+        }
+
+        function createSessionId() {
+            let id = localStorage.getItem('honey_session_id');
+            if (!id) {
+                id = 'sess_' + Math.random().toString(36).substring(2) + Date.now();
+                localStorage.setItem('honey_session_id', id);
+            }
+            return id;
         }
 
         function renderReviews() {
@@ -587,6 +613,7 @@
             const summaryCount = document.getElementById('summaryCount');
             const reviews = getReviews();
             const isAdmin = localStorage.getItem('is_honey_admin') === 'true';
+            const currentSessionId = createSessionId();
 
             list.innerHTML = '';
 
@@ -610,10 +637,13 @@
 
                 const starsHtml = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
                 
-                let deleteBtnHtml = '';
-                if (isAdmin) {
-                    deleteBtnHtml = `
+                const isAuthor = rev.sessionId === currentSessionId;
+                let actionsHtml = '';
+
+                if (isAuthor || isAdmin) {
+                    actionsHtml = `
                         <div class="review-actions">
+                            ${isAuthor ? `<button class="action-btn edit-btn" onclick="editReview(${index})">Изменить</button>` : ''}
                             <button class="action-btn delete-btn" onclick="deleteReview(${index})">Удалить</button>
                         </div>
                     `;
@@ -628,7 +658,7 @@
                         <span class="review-card-stars">${starsHtml}</span>
                     </div>
                     <div class="review-card-text">${escapeHtml(rev.text)}</div>
-                    ${deleteBtnHtml}
+                    ${actionsHtml}
                 `;
 
                 list.appendChild(card);
@@ -662,14 +692,17 @@
             const authorInput = document.getElementById('reviewAuthor').value.trim();
             const textInput = document.getElementById('reviewText').value.trim();
             const rating = parseInt(ratingInput.value);
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+            const sessionId = createSessionId();
 
             if (!authorInput || !textInput) return;
 
-            // Скрытый вход для админа (кто знает логин и пароль в полях ввода — тот активирует режим)
             if (authorInput === ADMIN_LOGIN && textInput === ADMIN_PASS) {
                 localStorage.setItem('is_honey_admin', 'true');
                 alert('Режим администратора активирован!');
                 form.reset();
+                document.getElementById('editIndex').value = '-1';
+                document.getElementById('submitBtn').innerText = 'Оставить отзыв';
                 ratingInput.value = 5;
                 updateStars(5);
                 renderReviews();
@@ -677,12 +710,21 @@
             }
 
             const reviews = getReviews();
-            reviews.unshift({
-                author: authorInput,
-                text: textInput,
-                rating: rating,
-                isAdminPost: false
-            });
+
+            if (editIndex > -1) {
+                reviews[editIndex].text = textInput;
+                reviews[editIndex].rating = rating;
+                document.getElementById('editIndex').value = '-1';
+                document.getElementById('submitBtn').innerText = 'Оставить отзыв';
+            } else {
+                reviews.unshift({
+                    author: authorInput,
+                    text: textInput,
+                    rating: rating,
+                    sessionId: sessionId,
+                    isAdminPost: false
+                });
+            }
 
             saveReviews(reviews);
             form.reset();
@@ -698,6 +740,20 @@
                 saveReviews(reviews);
                 renderReviews();
             }
+        };
+
+        window.editReview = function(index) {
+            let reviews = getReviews();
+            let rev = reviews[index];
+
+            document.getElementById('reviewAuthor').value = rev.author;
+            document.getElementById('reviewText').value = rev.text;
+            ratingInput.value = rev.rating;
+            document.getElementById('editIndex').value = index;
+            document.getElementById('submitBtn').innerText = 'Сохранить изменения';
+
+            updateStars(rev.rating);
+            window.scrollTo({ top: form.offsetTop - 50, behavior: 'smooth' });
         };
 
         renderReviews();
