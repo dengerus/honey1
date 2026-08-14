@@ -500,7 +500,7 @@
                 </form>
 
                 <div class="reviews-list" id="reviewsList">
-                    <div class="no-reviews-msg">Отзывов пока нет. Будьте первыми!</div>
+                    <div class="no-reviews-msg">Загрузка отзывов из облака...</div>
                 </div>
             </div>
         </main>
@@ -510,6 +510,7 @@
         </footer>
     </div>
 
+    <!-- Попапы -->
     <div id="favorites-popup" class="cart-popup hidden">
         <div class="cart-popup-header">
             <h3>🔖 Ваши сохраненные заказы</h3>
@@ -550,6 +551,10 @@
 
     <script src="cart.js"></script>
     <script>
+        // Ваши ключи JSONBin
+        const BIN_ID = "6a7ed2aaf5f4af5e29150496"; 
+        const API_KEY = "$2a$10$o1monbN8e52293mD0DQxY.QR1cgKvUrLIqDAR5Ihv3tFqLz0R2Mhy";
+
         const ADMIN_LOGIN = "Admin";
         const ADMIN_PASS = "honey123";
 
@@ -575,22 +580,6 @@
             });
         });
 
-        // Жесткая очистка мусора и старых фантомных отзывов при первом запуске
-        if (!localStorage.getItem('honey_reviews_cleaned_v2')) {
-            localStorage.removeItem('honey_reviews');
-            localStorage.setItem('honey_reviews_cleaned_v2', 'true');
-        }
-
-        function getReviews() {
-            let reviews = JSON.parse(localStorage.getItem('honey_reviews'));
-            if (!reviews || !Array.isArray(reviews)) return [];
-            return reviews;
-        }
-
-        function saveReviews(reviews) {
-            localStorage.setItem('honey_reviews', JSON.stringify(reviews));
-        }
-
         function createSessionId() {
             let id = localStorage.getItem('honey_session_id');
             if (!id) {
@@ -600,11 +589,40 @@
             return id;
         }
 
-        function renderReviews() {
+        async function fetchReviews() {
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await response.json();
+                return Array.isArray(data.record) ? data.record : [];
+            } catch (error) {
+                console.error("Ошибка загрузки отзывов:", error);
+                return [];
+            }
+        }
+
+        async function syncReviewsToCloud(reviews) {
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(reviews)
+                });
+            } catch (error) {
+                console.error("Ошибка сохранения отзывов:", error);
+            }
+        }
+
+        async function renderReviews() {
             const list = document.getElementById('reviewsList');
             const summaryStars = document.getElementById('summaryStars');
             const summaryCount = document.getElementById('summaryCount');
-            const reviews = getReviews();
+            
+            const reviews = await fetchReviews();
             const isAdmin = localStorage.getItem('is_honey_admin') === 'true';
             const currentSessionId = createSessionId();
 
@@ -629,16 +647,14 @@
                 card.className = 'review-card';
 
                 const starsHtml = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
-                
-                // Кнопки Изменить/Удалить видны автору отзыва или админу
                 const isAuthor = rev.sessionId === currentSessionId;
                 let actionsHtml = '';
 
                 if (isAuthor || isAdmin) {
                     actionsHtml = `
                         <div class="review-actions">
-                            ${isAuthor ? `<button class="action-btn edit-btn" onclick="editReview(${index})">Изменить</button>` : ''}
-                            <button class="action-btn delete-btn" onclick="deleteReview(${index})">Удалить</button>
+                            ${isAuthor ? `<button class="action-btn edit-btn" onclick="startEditReview(${index})">Изменить</button>` : ''}
+                            <button class="action-btn delete-btn" onclick="removeReview(${index})">Удалить</button>
                         </div>
                     `;
                 }
@@ -669,18 +685,12 @@
         }
 
         function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
         const form = document.getElementById('reviewForm');
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const authorInput = document.getElementById('reviewAuthor').value.trim();
@@ -691,7 +701,6 @@
 
             if (!authorInput || !textInput) return;
 
-            // Вход в режим администратора через скрытые поля
             if (authorInput === ADMIN_LOGIN && textInput === ADMIN_PASS) {
                 localStorage.setItem('is_honey_admin', 'true');
                 alert('Режим администратора активирован!');
@@ -704,7 +713,7 @@
                 return;
             }
 
-            const reviews = getReviews();
+            const reviews = await fetchReviews();
 
             if (editIndex > -1) {
                 reviews[editIndex].text = textInput;
@@ -721,24 +730,24 @@
                 });
             }
 
-            saveReviews(reviews);
+            await syncReviewsToCloud(reviews);
             form.reset();
             ratingInput.value = 5;
             updateStars(5);
             renderReviews();
         });
 
-        window.deleteReview = function(index) {
+        window.removeReview = async function(index) {
             if (confirm('Удалить этот отзыв?')) {
-                let reviews = getReviews();
+                let reviews = await fetchReviews();
                 reviews.splice(index, 1);
-                saveReviews(reviews);
+                await syncReviewsToCloud(reviews);
                 renderReviews();
             }
         };
 
-        window.editReview = function(index) {
-            let reviews = getReviews();
+        window.startEditReview = async function(index) {
+            let reviews = await fetchReviews();
             let rev = reviews[index];
 
             document.getElementById('reviewAuthor').value = rev.author;
