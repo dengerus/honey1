@@ -257,7 +257,7 @@
         const ADMIN_LOGIN = "Admin";
         const ADMIN_PASS = "honey123";
 
-        // Простейший фильтр нецензурных слов
+        // Простейший фильтр нецензурных слов (можно дополнять)
         const badWords = ["хуй", "пизда", "ебать", "сука", "блять", "блдь", "идиот", "мразота", "fuck", "shit"];
 
         function filterText(text) {
@@ -286,8 +286,10 @@
                 });
             });
         });
+        // Инициализация звезд по умолчанию (все 5 активны)
         stars.forEach(s => s.classList.add('active'));
 
+        // Загрузка отзывов из localStorage
         function getReviews() {
             return JSON.parse(localStorage.getItem('honey_reviews')) || [];
         }
@@ -296,6 +298,7 @@
             localStorage.setItem('honey_reviews', JSON.stringify(reviews));
         }
 
+        // Рендер отзывов на странице
         function renderReviews() {
             const list = document.getElementById('reviewsList');
             const reviews = getReviews();
@@ -314,6 +317,7 @@
 
                 const starsHtml = '★'.repeat(rev.rating) + '☆'.repeat(5 - rev.rating);
                 
+                // Проверка прав: автор отзыва ИЛИ админ
                 const isAdmin = localStorage.getItem('is_honey_admin') === 'true';
                 const isAuthor = rev.sessionId === currentSessionId;
 
@@ -357,6 +361,7 @@
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
+        // Обработка формы
         const form = document.getElementById('reviewForm');
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -366,6 +371,8 @@
             const rating = parseInt(ratingInput.value);
             const editIndex = parseInt(document.getElementById('editIndex').value);
 
+            // Проверка режима Администратора
+            let isAdminPost = false;
             if (authorInput === ADMIN_LOGIN && textInput === ADMIN_PASS) {
                 localStorage.setItem('is_honey_admin', 'true');
                 alert('Режим администратора активирован!');
@@ -376,16 +383,19 @@
                 return;
             }
 
+            // Фильтрация мата
             const cleanText = filterText(textInput);
             const reviews = getReviews();
             const sessionId = localStorage.getItem('honey_session_id') || createSessionId();
 
             if (editIndex > -1) {
+                // Редактирование существующего
                 reviews[editIndex].text = cleanText;
                 reviews[editIndex].rating = rating;
                 document.getElementById('editIndex').value = '-1';
                 document.getElementById('submitBtn').innerText = 'Оставить отзыв';
             } else {
+                // Добавление нового
                 reviews.unshift({
                     author: authorInput,
                     text: cleanText,
@@ -397,11 +407,13 @@
 
             saveReviews(reviews);
             form.reset();
+            // Сброс звезд на 5
             ratingInput.value = 5;
             stars.forEach(s => s.classList.add('active'));
             renderReviews();
         });
 
+        // Функция удаления отзыва
         window.deleteReview = function(index) {
             if (confirm('Вы уверены, что хотите удалить этот отзыв?')) {
                 let reviews = getReviews();
@@ -411,6 +423,7 @@
             }
         };
 
+        // Функция редактирования отзыва
         window.editReview = function(index) {
             let reviews = getReviews();
             let rev = reviews[index];
@@ -421,6 +434,7 @@
             document.getElementById('editIndex').value = index;
             document.getElementById('submitBtn').innerText = 'Сохранить изменения';
 
+            // Подсветка звезд
             stars.forEach(s => {
                 if (s.getAttribute('data-value') <= rev.rating) {
                     s.classList.add('active');
@@ -432,6 +446,7 @@
             window.scrollTo({ top: form.offsetTop - 50, behavior: 'smooth' });
         };
 
+        // Первичный запуск отрисовки
         renderReviews();
     </script>
 </body>
