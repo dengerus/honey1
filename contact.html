@@ -551,8 +551,7 @@
 
     <script src="cart.js"></script>
     <script>
-        // Ваши ключи JSONBin
-        const BIN_ID = "6a7ed2aaf5f4af5e29150496"; 
+        const BIN_ID = "6a7f48ffda38895dfee55c83"; 
         const API_KEY = "$2a$10$o1monbN8e52293mD0DQxY.QR1cgKvUrLIqDAR5Ihv3tFqLz0R2Mhy";
 
         const ADMIN_LOGIN = "Admin";
@@ -595,7 +594,8 @@
                     headers: { 'X-Master-Key': API_KEY }
                 });
                 const data = await response.json();
-                return Array.isArray(data.record) ? data.record : [];
+                let records = Array.isArray(data.record) ? data.record : [];
+                return records.filter(rev => rev && rev.author && rev.text && rev.sessionId !== 'system');
             } catch (error) {
                 console.error("Ошибка загрузки отзывов:", error);
                 return [];
@@ -713,7 +713,7 @@
                 return;
             }
 
-            const reviews = await fetchReviews();
+            let reviews = await fetchReviews();
 
             if (editIndex > -1) {
                 reviews[editIndex].text = textInput;
