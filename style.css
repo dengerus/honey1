@@ -25,7 +25,8 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-body::before, body::after {
+body::before,
+body::after {
     content: '';
     position: fixed;
     top: 0;
@@ -33,20 +34,35 @@ body::before, body::after {
     width: 60px;
     z-index: -1;
     background-color: #fef9c3;
-    background-image: radial-gradient(circle farthest-side at 10% 90%, #fffbeb, transparent),
-                        radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
-                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
-                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
-                        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
+    background-image:
+        radial-gradient(circle farthest-side at 10% 90%, #fffbeb, transparent),
+        radial-gradient(circle farthest-side at 90% 10%, #fffbeb, transparent),
+        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+        linear-gradient(30deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+        linear-gradient(150deg, #fef08a 12%, transparent 12.5%, transparent 87%, #fef08a 87.5%, #fef08a),
+        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a),
+        linear-gradient(60deg, #fef08a 25%, transparent 25.5%, transparent 75%, #fef08a 75%, #fef08a);
     background-size: 30px 52px;
-    background-position: 0 0, 0 0, 0 0, 0 0, 15px 26px, 15px 26px, 0 0, 15px 26px;
+    background-position:
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        15px 26px,
+        15px 26px,
+        0 0,
+        15px 26px;
     opacity: 0.7;
 }
-body::before { left: 0; }
-body::after { right: 0; }
+
+body::before {
+    left: 0;
+}
+
+body::after {
+    right: 0;
+}
 
 .main-wrapper {
     width: 100%;
@@ -95,7 +111,7 @@ header {
     font-weight: 800;
     color: #713f12;
     text-decoration: none;
-    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
     letter-spacing: -0.5px;
     white-space: nowrap;
     overflow: hidden;
@@ -195,7 +211,7 @@ nav a:hover {
     background-color: #fffbeb;
     border-color: #facc15;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 nav a.active {
@@ -236,7 +252,7 @@ nav a.active::after {
     padding: 25px;
     border-radius: var(--card-radius);
     border: 1px solid #fef08a;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     transition: var(--transition);
@@ -334,7 +350,7 @@ nav a.active::after {
     padding: 30px;
     border-radius: var(--card-radius);
     border: 1px solid #fef08a;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .contact-info-card h2 {
@@ -372,6 +388,11 @@ nav a.active::after {
     text-decoration: underline;
 }
 
+
+/* =========================================
+   КОРЗИНА
+   ========================================= */
+
 .cart-popup {
     position: fixed;
     bottom: 95px;
@@ -382,7 +403,7 @@ nav a.active::after {
     background: #ffffff;
     border: 2px solid #ca8a04;
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     padding: 20px;
     opacity: 0;
@@ -458,7 +479,8 @@ nav a.active::after {
     background: #a16207;
 }
 
-.fav-item-row, .popup-item-row {
+.fav-item-row,
+.popup-item-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -468,19 +490,22 @@ nav a.active::after {
     border: 1px solid #fef08a;
 }
 
-.popup-item-info, .fav-item-info {
+.popup-item-info,
+.fav-item-info {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.popup-item-name, .fav-item-name {
+.popup-item-name,
+.fav-item-name {
     font-weight: 700;
     color: #713f12;
     font-size: 15px;
 }
 
-.popup-item-price, .fav-item-desc {
+.popup-item-price,
+.fav-item-desc {
     font-size: 13px;
     color: #78716c;
 }
@@ -520,6 +545,11 @@ nav a.active::after {
     background: #b91c1c;
 }
 
+
+/* =========================================
+   НИЖНЯЯ ПАНЕЛЬ ЗАКАЗА
+   ========================================= */
+
 .order-bar {
     position: fixed;
     bottom: 15px;
@@ -530,7 +560,7 @@ nav a.active::after {
     background: #ffffff;
     border: 2px solid #ca8a04;
     border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     z-index: 999;
     padding: 12px 20px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -637,6 +667,11 @@ nav a.active::after {
     font-size: 15px;
 }
 
+
+/* =========================================
+   LIGHTBOX
+   ========================================= */
+
 .lightbox-modal {
     display: none;
     position: fixed;
@@ -673,6 +708,11 @@ nav a.active::after {
     cursor: pointer;
 }
 
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
 footer {
     text-align: center;
     padding: 30px;
@@ -681,37 +721,196 @@ footer {
     margin-top: auto;
 }
 
+
+/* =========================================
+   ВЫБОР ВЕСА ТОВАРА
+   ========================================= */
+
+.weight-meta {
+    display: block !important;
+}
+
+.weight-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.weight-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(120, 53, 15, 0.12);
+    border-radius: 12px;
+    transition: var(--transition);
+}
+
+.weight-option:hover {
+    background: #fff;
+    border-color: rgba(120, 53, 15, 0.25);
+}
+
+.weight-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-brown);
+    white-space: nowrap;
+}
+
+.weight-option .counter-box {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.weight-option .cnt-value {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.weight-option .cnt-btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+}
+
+
+/* =========================================
+   КОРЗИНА — ИНФОРМАЦИЯ О ВЕСЕ
+   ========================================= */
+
+.popup-item-price {
+    display: block;
+    margin-top: 4px;
+}
+
+
+/* =========================================
+   МОБИЛЬНАЯ ВЕРСИЯ
+   ========================================= */
+
 @media (max-width: 768px) {
-    body { padding-bottom: 110px; }
-    body::before, body::after { width: 10px; }
-    .main-wrapper { margin: 0; padding: 10px; }
-    header { padding: 15px; margin-bottom: 20px; }
-    .honey-grid, .contacts-grid { grid-template-columns: 1fr; gap: 20px; }
-    
-    .site-title { 
-        font-size: 20px; 
+
+    body {
+        padding-bottom: 110px;
     }
+
+    body::before,
+    body::after {
+        width: 10px;
+    }
+
+    .main-wrapper {
+        margin: 0;
+        padding: 10px;
+    }
+
+    header {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .honey-grid,
+    .contacts-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .site-title {
+        font-size: 20px;
+    }
+
     .header-emoji {
         font-size: 26px;
     }
-    
-    nav a { font-size: 12px; padding: 10px 6px; }
-    .info-card img { height: 200px; }
-    
+
+    nav a {
+        font-size: 12px;
+        padding: 10px 6px;
+    }
+
+    .info-card img {
+        height: 200px;
+    }
+
     .order-bar {
         width: 96%;
         padding: 10px 12px;
     }
+
     .order-bar-content {
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
     }
+
     .whatsapp-btn {
         justify-content: center;
         width: 100%;
     }
+
     .order-items-preview {
         max-width: 100%;
     }
+
+
+    /* Вес на телефоне */
+
+    .weight-option {
+        padding: 9px 10px;
+        gap: 8px;
+    }
+
+    .weight-label {
+        font-size: 13px;
+    }
+
+    .weight-option .counter-box {
+        gap: 5px;
+    }
+
+    .weight-option .cnt-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+}
+
+
+/* =========================================
+   МАЛЕНЬКИЕ ТЕЛЕФОНЫ
+   ========================================= */
+
+@media (max-width: 420px) {
+
+    .info-card {
+        padding: 18px;
+    }
+
+    .weight-option {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .weight-label {
+        font-size: 12px;
+    }
+
+    .weight-option .cnt-btn {
+        width: 27px;
+        height: 27px;
+    }
+
+    .weight-option .counter-box {
+        padding: 3px 7px;
+        gap: 5px;
+    }
+
 }
