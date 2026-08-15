@@ -6,7 +6,7 @@
     <title>Пасека — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Стиль для якорной навигации */
+        /* Якорная навигация */
         .anchor-nav {
             display: flex;
             gap: 10px;
@@ -15,20 +15,55 @@
             background: #fffbeb;
             border-radius: var(--card-radius);
             border: 1px solid #fef08a;
+            flex-wrap: wrap;
         }
         .anchor-nav a {
             text-decoration: none;
             color: var(--accent-blue);
             font-weight: 700;
             padding: 5px 10px;
-            border-bottom: 2px solid transparent;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            background: #fff;
         }
         .anchor-nav a:hover {
-            border-bottom: 2px solid var(--accent-blue);
+            background: #eff6ff;
         }
         .section-title {
             margin: 40px 0 20px 0;
             color: #713f12;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #fef08a;
+        }
+        /* Кнопка наверх */
+        .to-top-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #ca8a04;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(202, 138, 4, 0.4);
+            transition: var(--transition);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 998;
+        }
+        .to-top-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .to-top-btn:hover {
+            background: #a16207;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -61,85 +96,72 @@
         <main>
             <h1 class="page-heading">Наша пасека</h1>
 
-            <!-- Блок якорных ссылок -->
+            <!-- Якорные ссылки -->
             <div class="anchor-nav">
-                <a href="#mountains1">Пасека в горах 1</a>
+                <a href="#mountains1">Пасека в горах</a>
                 <a href="#steppes">Пасека в степи</a>
-                <a href="#mountains2">Пасека в горах 2</a>
+                <a href="#mountains2">Пасека в горах (доп)</a>
             </div>
 
-            <h2 id="mountains1" class="section-title">Пасека в горах (Часть 1)</h2>
+            <!-- Группы карточек -->
+            <h2 id="mountains1" class="section-title">Пасека в горах</h2>
             <div class="honey-grid">
-                <!-- 3 карточки -->
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Горы">
-                    <h3>Горный мед 1</h3>
-                    <p>Описание пасеки в высокогорье с кристальным воздухом.</p>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Горы">
-                    <h3>Горный мед 2</h3>
-                    <p>Травы, растущие на вершинах, придают особый вкус.</p>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Горы">
-                    <h3>Горный мед 3</h3>
-                    <p>Традиционные методы сбора в горах.</p>
-                </article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80"><h3>Горы 1</h3><p>Описание пасеки в горах.</p></article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80"><h3>Горы 2</h3><p>Описание пасеки в горах.</p></article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80"><h3>Горы 3</h3><p>Описание пасеки в горах.</p></article>
             </div>
 
             <h2 id="steppes" class="section-title">Пасека в степи</h2>
             <div class="honey-grid">
-                <!-- 3 карточки -->
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Степь">
-                    <h3>Степной мед 1</h3>
-                    <p>Бескрайние просторы и обилие дикорастущих цветов.</p>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Степь">
-                    <h3>Степной мед 2</h3>
-                    <p>Солнечный мед с ароматом летних степных трав.</p>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Степь">
-                    <h3>Степной мед 3</h3>
-                    <p>Уникальные свойства степного разнотравья.</p>
-                </article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80"><h3>Степь 1</h3><p>Описание пасеки в степи.</p></article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80"><h3>Степь 2</h3><p>Описание пасеки в степи.</p></article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80"><h3>Степь 3</h3><p>Описание пасеки в степи.</p></article>
             </div>
 
-            <h2 id="mountains2" class="section-title">Пасека в горах (Часть 2)</h2>
+            <h2 id="mountains2" class="section-title">Пасека в горах (доп)</h2>
             <div class="honey-grid">
-                <!-- 3 карточки -->
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Горы">
-                    <h3>Горный мед 4</h3>
-                    <p>Чистейшие источники воды рядом с ульями.</p>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Горы">
-                    <h3>Горный мед 5</h3>
-                    <p>Охраняемая территория дикой природы.</p>
-                </article>
-                <article class="info-card">
-                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Горы">
-                    <h3>Горный мед 6</h3>
-                    <p>Натуральный продукт высшего качества.</p>
-                </article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80"><h3>Горы 4</h3><p>Описание пасеки в горах.</p></article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80"><h3>Горы 5</h3><p>Описание пасеки в горах.</p></article>
+                <article class="info-card"><img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80"><h3>Горы 6</h3><p>Описание пасеки в горах.</p></article>
             </div>
         </main>
+
+        <button id="toTopBtn" class="to-top-btn">↑</button>
 
         <footer>
             <p>&copy; 2026 Экспериментальный сайт о мёде. Все права защищены.</p>
         </footer>
     </div>
 
-    <!-- Скрипты -->
-    <div id="favorites-popup" class="cart-popup hidden">...</div>
-    <div id="cart-popup" class="cart-popup hidden">...</div>
-    <div id="order-bar" class="order-bar hidden">...</div>
-    <div id="lightbox" class="lightbox-modal">...</div>
+    <!-- Попапы -->
+    <div id="favorites-popup" class="cart-popup hidden">
+        <div class="cart-popup-header"><h3>🔖 Ваши сохраненные заказы</h3><button id="close-favorites-popup" class="close-popup-btn">&times;</button></div>
+        <div style="margin-bottom: 12px; display: flex; gap: 8px;"><input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input"><button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button></div>
+        <div id="favorites-popup-items" class="cart-popup-items"></div>
+    </div>
+    <div id="cart-popup" class="cart-popup hidden">
+        <div class="cart-popup-header"><h3>Состав вашего заказа</h3><button id="close-cart-popup" class="close-popup-btn">&times;</button></div>
+        <div id="cart-popup-items" class="cart-popup-items"></div>
+    </div>
+    <div id="order-bar" class="order-bar hidden">
+        <div class="order-bar-content">
+            <div id="order-bar-toggle" class="order-info"><div class="order-title-row"><span class="order-heading">ЗАКАЗ <span class="order-edit-hint">(изменить)</span></span><span class="order-total">Итого: <strong id="bar-total-price">0 ₸</strong></span></div><div id="bar-items-text" class="order-items-preview">пусто</div></div>
+            <button id="whatsapp-send-btn" class="whatsapp-btn" title="Отправить в Ватсап"><span class="wa-text">в Ватсап</span><span class="wa-icon">➔</span></button>
+        </div>
+    </div>
+    <div id="lightbox" class="lightbox-modal"><span class="lightbox-close">&times;</span><img class="lightbox-content" id="lightbox-img" alt="Увеличенное фото"></div>
 
+    <script>
+        const toTopBtn = document.getElementById("toTopBtn");
+        window.onscroll = () => {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                toTopBtn.classList.add("visible");
+            } else {
+                toTopBtn.classList.remove("visible");
+            }
+        };
+        toTopBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+    </script>
     <script src="cart.js"></script>
 </body>
 </html>
