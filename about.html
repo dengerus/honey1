@@ -6,34 +6,38 @@
     <title>Пасека — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Якорная навигация */
+        /* Якорная навигация в ряд с красивой нижней линией в цвет букв */
+        .anchor-nav-wrapper {
+            margin-bottom: 35px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--text-brown);
+        }
         .anchor-nav {
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: #fffbeb;
-            border-radius: var(--card-radius);
-            border: 1px solid #fef08a;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .anchor-nav a {
             text-decoration: none;
-            color: var(--accent-blue);
+            color: var(--text-brown);
             font-weight: 700;
-            padding: 5px 10px;
-            border: 1px solid #bfdbfe;
-            border-radius: 8px;
-            background: #fff;
+            padding: 8px 16px;
+            border: 1px solid #fef08a;
+            border-radius: 20px;
+            background: #fffbeb;
+            transition: var(--transition);
         }
         .anchor-nav a:hover {
-            background: #eff6ff;
+            background: #fef9c3;
+            border-color: #facc15;
+            transform: translateY(-2px);
         }
         .section-title {
             margin: 40px 0 20px 0;
             color: #713f12;
             padding-bottom: 10px;
             border-bottom: 2px solid #fef08a;
+            font-size: 24px;
         }
         /* Кнопка наверх */
         .to-top-btn {
@@ -96,33 +100,71 @@
         <main>
             <h1 class="page-heading">Наша пасека</h1>
 
-            <!-- Якорные ссылки -->
-            <div class="anchor-nav">
-                <a href="#mountains1">Пасека в горах</a>
-                <a href="#steppes">Пасека в степи</a>
-                <a href="#mountains2">Пасека в горах (доп)</a>
+            <!-- Якорные ссылки в ряд с линией -->
+            <div class="anchor-nav-wrapper">
+                <div class="anchor-nav">
+                    <a href="#mountains1">Пасека в горах</a>
+                    <a href="#steppes">Пасека в степи</a>
+                    <a href="#mountains2">Пасека в горах (доп)</a>
+                </div>
             </div>
 
-            <!-- Группы карточек -->
+            <!-- Группы карточек с одинаковым размером (используют общие классы из style.css) -->
             <h2 id="mountains1" class="section-title">Пасека в горах</h2>
             <div class="honey-grid">
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80"><h3>Горы 1</h3><p>Описание пасеки в горах.</p></article>
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80"><h3>Горы 2</h3><p>Описание пасеки в горах.</p></article>
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80"><h3>Горы 3</h3><p>Описание пасеки в горах.</p></article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Горы 1">
+                    <h3>Горы 1</h3>
+                    <p>Описание пасеки в живописных горных районах.</p>
+                </article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Горы 2">
+                    <h3>Горы 2</h3>
+                    <p>Описание пасеки в живописных горных районах.</p>
+                </article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=600&auto=format&fit=crop&q=80" alt="Горы 3">
+                    <h3>Горы 3</h3>
+                    <p>Описание пасеки в живописных горных районах.</p>
+                </article>
             </div>
 
             <h2 id="steppes" class="section-title">Пасека в степи</h2>
             <div class="honey-grid">
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80"><h3>Степь 1</h3><p>Описание пасеки в степи.</p></article>
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80"><h3>Степь 2</h3><p>Описание пасеки в степи.</p></article>
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80"><h3>Степь 3</h3><p>Описание пасеки в степи.</p></article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Степь 1">
+                    <h3>Степь 1</h3>
+                    <p>Описание пасеки на бескрайних степных просторах.</p>
+                </article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Степь 2">
+                    <h3>Степь 2</h3>
+                    <p>Описание пасеки на бескрайних степных просторах.</p>
+                </article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?w=600&auto=format&fit=crop&q=80" alt="Степь 3">
+                    <h3>Степь 3</h3>
+                    <p>Описание пасеки на бескрайних степных просторах.</p>
+                </article>
             </div>
 
             <h2 id="mountains2" class="section-title">Пасека в горах (доп)</h2>
             <div class="honey-grid">
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80"><h3>Горы 4</h3><p>Описание пасеки в горах.</p></article>
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80"><h3>Горы 5</h3><p>Описание пасеки в горах.</p></article>
-                <article class="info-card"><img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80"><h3>Горы 6</h3><p>Описание пасеки в горах.</p></article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Горы 4">
+                    <h3>Горы 4</h3>
+                    <p>Дополнительная локация нашей горной пасеки.</p>
+                </article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Горы 5">
+                    <h3>Горы 5</h3>
+                    <p>Дополнительная локация нашей горной пасеки.</p>
+                </article>
+                <article class="info-card">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop&q=80" alt="Горы 6">
+                    <h3>Горы 6</h3>
+                    <p>Дополнительная локация нашей горной пасеки.</p>
+                </article>
             </div>
         </main>
 
