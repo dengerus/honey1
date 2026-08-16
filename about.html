@@ -7,44 +7,38 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .anchor-nav-wrapper {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--text-brown);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #fef08a;
         }
         
-        /* Базово на мобильных: ссылки в столбик */
+        /* Компактные якорные ссылки по левому краю */
         .anchor-nav {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            align-items: stretch;
-        }
-
-        /* На компьютере (шире 768px): якорные ссылки в ряд */
-        @media (min-width: 769px) {
-            .anchor-nav {
-                flex-direction: row;
-                align-items: center;
-                gap: 15px;
-            }
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-start;
         }
 
         .anchor-nav a {
             text-decoration: none;
-            color: var(--text-brown);
+            color: #ca8a04;
             font-weight: 700;
-            padding: 8px 18px;
+            font-size: 14px;
+            padding: 6px 14px;
             border: 1px solid #fef08a;
-            border-radius: 12px;
+            border-radius: 8px;
             background: #fffbeb;
             transition: var(--transition);
-            text-align: center;
         }
+
         .anchor-nav a:hover {
             background: #fef9c3;
+            color: #713f12;
             border-color: #facc15;
-            transform: translateY(-2px);
         }
+
         .section-title {
             margin: 40px 0 20px 0;
             color: #713f12;
@@ -117,7 +111,7 @@
         <main>
             <h1 class="page-heading">Наша пасека</h1>
 
-            <!-- Якорные ссылки (на ПК в ряд, на телефоне в столбик) -->
+            <!-- Якорные ссылки -->
             <div class="anchor-nav-wrapper">
                 <div class="anchor-nav">
                     <a href="#mountains1">пасека</a>
