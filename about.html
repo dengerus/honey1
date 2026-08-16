@@ -6,31 +6,32 @@
     <title>Пасека — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Якорная навигация в ряд с красивой нижней линией в цвет букв */
+        /* Якорные ссылки вертикально в столбик с линией в цвет текста */
         .anchor-nav-wrapper {
-            margin-bottom: 35px;
-            padding-bottom: 15px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
             border-bottom: 2px solid var(--text-brown);
         }
         .anchor-nav {
             display: flex;
+            flex-direction: column;
             gap: 12px;
-            flex-wrap: wrap;
+            align-items: flex-start;
         }
         .anchor-nav a {
             text-decoration: none;
             color: var(--text-brown);
             font-weight: 700;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border: 1px solid #fef08a;
-            border-radius: 20px;
+            border-radius: 12px;
             background: #fffbeb;
             transition: var(--transition);
         }
         .anchor-nav a:hover {
             background: #fef9c3;
             border-color: #facc15;
-            transform: translateY(-2px);
+            transform: translateX(5px);
         }
         .section-title {
             margin: 40px 0 20px 0;
@@ -38,6 +39,12 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #fef08a;
             font-size: 24px;
+        }
+        /* Фиксированный размер картинок строго 600x800 */
+        .info-card img {
+            width: 100%;
+            aspect-ratio: 600 / 800;
+            object-fit: cover;
         }
         /* Кнопка наверх */
         .to-top-btn {
@@ -100,16 +107,16 @@
         <main>
             <h1 class="page-heading">Наша пасека</h1>
 
-            <!-- Якорные ссылки в ряд с линией -->
+            <!-- Якорные ссылки в столбик -->
             <div class="anchor-nav-wrapper">
                 <div class="anchor-nav">
-                    <a href="#mountains1">Пасека в горах</a>
-                    <a href="#steppes">Пасека в степи</a>
-                    <a href="#mountains2">Пасека в горах (доп)</a>
+                    <a href="#mountains1">пасека</a>
+                    <a href="#steppes">пасека</a>
+                    <a href="#mountains2">пасека</a>
                 </div>
             </div>
 
-            <!-- Группы карточек с одинаковым размером (используют общие классы из style.css) -->
+            <!-- Карточки с фото 600x800 -->
             <h2 id="mountains1" class="section-title">Пасека в горах</h2>
             <div class="honey-grid">
                 <article class="info-card">
@@ -175,7 +182,7 @@
         </footer>
     </div>
 
-    <!-- Попапы -->
+    <!-- Общие скрипты/попапы для работы сайта -->
     <div id="favorites-popup" class="cart-popup hidden">
         <div class="cart-popup-header"><h3>🔖 Ваши сохраненные заказы</h3><button id="close-favorites-popup" class="close-popup-btn">&times;</button></div>
         <div style="margin-bottom: 12px; display: flex; gap: 8px;"><input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input"><button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button></div>
