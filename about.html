@@ -6,18 +6,29 @@
     <title>Пасека — Натуральный мёд</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Якорные ссылки вертикально в столбик с линией в цвет текста */
         .anchor-nav-wrapper {
             margin-bottom: 40px;
             padding-bottom: 20px;
             border-bottom: 2px solid var(--text-brown);
         }
+        
+        /* Базово на мобильных: ссылки в столбик */
         .anchor-nav {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            align-items: flex-start;
+            align-items: stretch;
         }
+
+        /* На компьютере (шире 768px): якорные ссылки в ряд */
+        @media (min-width: 769px) {
+            .anchor-nav {
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+
         .anchor-nav a {
             text-decoration: none;
             color: var(--text-brown);
@@ -27,11 +38,12 @@
             border-radius: 12px;
             background: #fffbeb;
             transition: var(--transition);
+            text-align: center;
         }
         .anchor-nav a:hover {
             background: #fef9c3;
             border-color: #facc15;
-            transform: translateX(5px);
+            transform: translateY(-2px);
         }
         .section-title {
             margin: 40px 0 20px 0;
@@ -40,13 +52,11 @@
             border-bottom: 2px solid #fef08a;
             font-size: 24px;
         }
-        /* Фиксированный размер картинок строго 600x800 */
         .info-card img {
             width: 100%;
-            aspect-ratio: 600 / 800;
+            aspect-ratio: 600 / 650;
             object-fit: cover;
         }
-        /* Кнопка наверх */
         .to-top-btn {
             position: fixed;
             bottom: 90px;
@@ -107,7 +117,7 @@
         <main>
             <h1 class="page-heading">Наша пасека</h1>
 
-            <!-- Якорные ссылки в столбик -->
+            <!-- Якорные ссылки (на ПК в ряд, на телефоне в столбик) -->
             <div class="anchor-nav-wrapper">
                 <div class="anchor-nav">
                     <a href="#mountains1">пасека</a>
@@ -116,7 +126,6 @@
                 </div>
             </div>
 
-            <!-- Карточки с фото 600x800 -->
             <h2 id="mountains1" class="section-title">Пасека в горах</h2>
             <div class="honey-grid">
                 <article class="info-card">
@@ -182,7 +191,6 @@
         </footer>
     </div>
 
-    <!-- Общие скрипты/попапы для работы сайта -->
     <div id="favorites-popup" class="cart-popup hidden">
         <div class="cart-popup-header"><h3>🔖 Ваши сохраненные заказы</h3><button id="close-favorites-popup" class="close-popup-btn">&times;</button></div>
         <div style="margin-bottom: 12px; display: flex; gap: 8px;"><input type="text" id="fav-name-input" placeholder="Название набора" class="fav-input"><button id="save-current-fav-btn" class="fav-save-btn">Сохранить текущий</button></div>

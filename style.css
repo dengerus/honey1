@@ -264,9 +264,10 @@ nav a.active::after {
     border-color: #facc15;
 }
 
+/* Уменьшена высота картинок на карточках (соотношение 600/650 вместо 600/800) */
 .info-card img {
     width: 100%;
-    aspect-ratio: 600 / 800;
+    aspect-ratio: 600 / 650;
     object-fit: cover;
     border-radius: 12px;
     margin-bottom: 20px;
@@ -303,10 +304,10 @@ nav a.active::after {
 .counter-box {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: #fffbeb;
-    padding: 4px 10px;
-    border-radius: 20px;
+    padding: 2px 6px;
+    border-radius: 15px;
     border: 1px solid #fde047;
 }
 
@@ -314,14 +315,15 @@ nav a.active::after {
     background: #ca8a04;
     color: white;
     border: none;
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 13px;
     transition: var(--transition);
 }
 
@@ -331,10 +333,10 @@ nav a.active::after {
 }
 
 .cnt-value {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     color: #713f12;
-    min-width: 16px;
+    min-width: 14px;
     text-align: center;
 }
 
@@ -387,7 +389,6 @@ nav a.active::after {
 .contact-details-list a:hover {
     text-decoration: underline;
 }
-
 
 /* =========================================
    КОРЗИНА
@@ -545,7 +546,6 @@ nav a.active::after {
     background: #b91c1c;
 }
 
-
 /* =========================================
    НИЖНЯЯ ПАНЕЛЬ ЗАКАЗА
    ========================================= */
@@ -667,7 +667,6 @@ nav a.active::after {
     font-size: 15px;
 }
 
-
 /* =========================================
    LIGHTBOX
    ========================================= */
@@ -708,7 +707,6 @@ nav a.active::after {
     cursor: pointer;
 }
 
-
 /* =========================================
    FOOTER
    ========================================= */
@@ -721,7 +719,6 @@ footer {
     margin-top: auto;
 }
 
-
 /* =========================================
    ВЫБОР ВЕСА ТОВАРА (КОМПАКТНЫЙ РЯД)
    ========================================= */
@@ -733,7 +730,7 @@ footer {
 .weight-options {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
 }
 
@@ -741,12 +738,12 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
-    padding: 8px 12px;
+    padding: 6px 10px;
     background: #fffbeb;
     border: 1px solid #fef08a;
-    border-radius: 12px;
+    border-radius: 10px;
     transition: var(--transition);
 }
 
@@ -756,7 +753,7 @@ footer {
 }
 
 .weight-label {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--text-brown);
     white-space: nowrap;
@@ -765,26 +762,27 @@ footer {
 .weight-option .counter-box {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 5px;
     flex-shrink: 0;
     background: #ffffff;
     border: 1px solid #fde047;
-    padding: 3px 8px;
-    border-radius: 15px;
+    padding: 2px 6px;
+    border-radius: 12px;
 }
 
 .weight-option .cnt-value {
-    min-width: 20px;
+    min-width: 16px;
     text-align: center;
     font-weight: 700;
+    font-size: 13px;
 }
 
 .weight-option .cnt-btn {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
     padding: 0;
+    font-size: 12px;
 }
-
 
 /* =========================================
    МОБИЛЬНАЯ ВЕРСИЯ
@@ -851,12 +849,11 @@ footer {
     }
 
     .weight-option {
-        padding: 8px 10px;
-        gap: 8px;
+        padding: 6px 8px;
+        gap: 6px;
     }
 
     .weight-label {
-        font-size: 13px;
+        font-size: 12px;
     }
-
 }
